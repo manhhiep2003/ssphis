@@ -1,5 +1,6 @@
 import { Options } from "swagger-jsdoc";
-
+import dotenv from "dotenv";
+dotenv.config();
 const swaggerOptions: Options = {
   definition: {
     openapi: "3.0.0",
@@ -11,11 +12,11 @@ const swaggerOptions: Options = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: process.env.DB_HOSTS || "http://localhost:3001",
       },
     ],
   },
-  apis: ["./src/routes/*.ts"],
+  apis: ["./src/routes/*.ts", "./src/docs/*.ts"],
 };
 
 export default swaggerOptions;
