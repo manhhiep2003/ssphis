@@ -1,0 +1,18 @@
+model Time_Slots {
+  time_slot_id Int      @id @default(autoincrement())
+  user_id      BigInt
+  start_time   String   @map("start_time")
+  end_time     String   @map("end_time")
+  status       Status   @default(Available)
+  created_at   DateTime @default(now()) @map("created_at")
+
+  user         User     @relation(fields: [user_id], references: [id])
+  appointments Appointments[]
+  
+  @@map("time_slots")
+}
+
+enum Status {
+  Available
+  Booked
+}

@@ -8,7 +8,8 @@ export async function createUserHandler(
   req: Request,
   res: Response
 ): Promise<void> {
-  const { username, email, password, phone, gender, createdBy, roleCode } =
+  const { username, email, password,userCode,firstName,
+    lastName, phone, gender, createdBy, roleCode } =
     req.body;
 
   if (!username || !email || !password || !phone || !roleCode) {
@@ -23,6 +24,9 @@ export async function createUserHandler(
       username,
       email,
       password,
+      userCode,
+      firstName,
+      lastName,
       phone,
       gender,
       roleCode,
