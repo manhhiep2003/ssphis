@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/user.routes";
 import roleRoutes from "./routes/role.routes";
 import timeSlotRoutes from "./routes/timeSlot.routes";
+import appointmentsRoutes from "./routes/appointments.routes";
 import swagger from "./swagger";
 import cors from "cors";
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/api", userRoutes);
 app.use("/api", roleRoutes);
 app.use("/api", timeSlotRoutes);
+app.use("/api",appointmentsRoutes);
 swagger(app);
 
 app.listen(PORT, () => {

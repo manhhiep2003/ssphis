@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 import HTTP_STATUS from "../constants/httpStatus";
 import { APPOINTMENTS_MESSAGES } from "../constants/messages";
-import { AppointmentsService } from "../services/appointments.service";
+import { AppointmentsService, AppointmentStatus } from "../services/appointments.service";
 
 export class AppointmentsController {
   static async getAllAppointments(req: Request, res: Response) {
@@ -47,9 +47,12 @@ export class AppointmentsController {
   static async getAppointmentsByUserId(req: Request, res: Response) {
     try {
       const user_id = Number(req.query.user_id);
-      const appointments = await AppointmentsService.getAppointmentsByUserId(
-        user_id
-      );
+      const status = req.query.status as AppointmentStatus
+      // Truyền status vào service nếu có, nếu không thì sẽ bỏ qua
+    const appointments = await AppointmentsService.getAppointmentsByUserId(
+      user_id,
+      status
+    );
       if (appointments.length > 0) {
         res.status(HTTP_STATUS.OK).json({
           message: APPOINTMENTS_MESSAGES.RETRIEVE_SUCCESS,
@@ -70,16 +73,17 @@ export class AppointmentsController {
 
   static async createAppointments(req: Request, res: Response) {
     try {
-      const { user_id, time_slot_id, date, status } = req.body;
-      const appointment = await AppointmentsService.createAppointments(
+      const { user_id, appointments } = req.body;
+
+      // Gọi service để tạo các cuộc hẹn
+      const createdAppointments = await AppointmentsService.createAppointments(
         user_id,
-        time_slot_id,
-        date,
-        status
+        appointments
       );
+
       res.status(HTTP_STATUS.CREATED).json({
         message: APPOINTMENTS_MESSAGES.CREATE_SUCCESS,
-        data: appointment,
+        data: createdAppointments,
       });
     } catch (error: any) {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
@@ -89,14 +93,16 @@ export class AppointmentsController {
     }
   }
 
-  static async updateAppointments(req: Request, res: Response) {
+  static async updateAppointments(req: Request, res: Response): Promise<void> {
     try {
       const appointment_id = Number(req.params.id);
-      const { date, status } = req.body;
+      const { status } = req.body; // Chỉ nhận `status`, không nhận `date`
+
       const updatedAppointment = await AppointmentsService.updateAppointments(
         appointment_id,
-        { date, status }
+        { status } // Chỉ truyền status vào service
       );
+
       res.status(HTTP_STATUS.OK).json({
         message: APPOINTMENTS_MESSAGES.UPDATE_SUCCESS,
         data: updatedAppointment,

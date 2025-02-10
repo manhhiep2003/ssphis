@@ -42,7 +42,7 @@ export class TimeSlotController {
     try {
       const user_id = Number(req.query.user_id); // Get user_id from query parameters
       console.log("User ID:", user_id);
-      
+
       const timeSlots = await TimeSlotService.getTimeSlotByUserId(user_id);
       if (timeSlots.length > 0) {
         res.status(HTTP_STATUS.OK).json({
