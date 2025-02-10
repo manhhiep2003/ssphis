@@ -1,0 +1,19 @@
+model Appointments {
+  appointment_id Int      @id @default(autoincrement())
+  user_id        BigInt
+  time_slot_id   Int
+  date           DateTime 
+  status         AppointmentStatus @default(Pending)
+  created_at     DateTime @default(now()) @map("created_at")
+
+  user           User @relation(fields: [user_id], references: [id])
+  timeSlot       Time_Slots @relation(fields: [time_slot_id], references: [time_slot_id])
+  
+  @@map("appointments")
+}
+
+enum AppointmentStatus {
+  Pending
+  Approved
+  Cancelled
+}

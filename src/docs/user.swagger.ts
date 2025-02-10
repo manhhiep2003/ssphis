@@ -1,6 +1,6 @@
 /**
  * @swagger
- * /api/users/register:
+ * /api/register:
  *   post:
  *     summary: Create a new user
  *     tags:
@@ -21,6 +21,15 @@
  *               password:
  *                 type: string
  *                 example: "password123"
+ *               userCode:
+ *                 type: string
+ *                 example: "1234567890"
+ *               firstName:
+ *                 type: string
+ *                 example: "John"
+ *               lastName:
+ *                type: string
+ *               example: "Doe"
  *               phone:
  *                 type: string
  *                 example: "1234567890"
@@ -42,7 +51,7 @@
 
 /**
  * @swagger
- * /api/users/login:
+ * /api/login:
  *   post:
  *     summary: Login user
  *     tags:

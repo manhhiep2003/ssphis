@@ -65,6 +65,7 @@ export class RoleController {
         Number(req.params.id),
         req.body
       );
+      
       res.status(HTTP_STATUS.OK).json({
         message: ROLES_MESSAGES.UPDATE_SUCCESS,
         data: role,
