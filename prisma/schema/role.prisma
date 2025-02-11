@@ -2,10 +2,10 @@ model Role {
     id       BigInt @id @default(autoincrement())
     roleCode String @unique @map("role_code") @db.VarChar(50)
     roleName String @unique @map("role_name") @db.VarChar(50)
-    createdAt DateTime? @default(now()) @map("created_date") @db.Timestamptz(3)
-    createdBy String    @map("created_by") @db.VarChar(36)
-    updatedAt DateTime? @updatedAt @map("modified_date") @db.Timestamptz(3)
-    updatedBy String?   @map("modified_by") @db.VarChar(36)
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+    createdBy String?   @map("created_by") @db.VarChar(36)
+    updatedAt DateTime? @updatedAt @map("modified_at") @db.Timestamptz(3)
+    updatedBy String?  @map("modified_by") @db.VarChar(36)
 
     users User[]
 
