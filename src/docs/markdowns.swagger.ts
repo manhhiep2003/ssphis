@@ -79,10 +79,14 @@
  *           schema:
  *             type: object
  *             properties:
- *               title:
+ *               contentHtml:
  *                 type: string
- *               content:
+ *               contentMarkdown:
  *                 type: string
+ *               description:
+ *                 type: string
+ *               user_id:
+ *                 type: integer
  *     responses:
  *       201:
  *         description: Successfully created markdown
@@ -90,6 +94,36 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Markdown'
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /api/markdowns/{user_id}:
+ *   get:
+ *     summary: Retrieve markdowns by user ID
+ *     tags: [Markdowns]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The ID of the user to retrieve markdowns for
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved markdowns
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Markdown'
+ *       404:
+ *         description: User not found
  *       500:
  *         description: Internal server error
  */
@@ -116,9 +150,11 @@
  *           schema:
  *             type: object
  *             properties:
- *               title:
+ *               contentHtml:
  *                 type: string
- *               content:
+ *               contentMarkdown:
+ *                 type: string
+ *               description:
  *                 type: string
  *     responses:
  *       200:

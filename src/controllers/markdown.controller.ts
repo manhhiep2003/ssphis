@@ -22,7 +22,9 @@ export class MarkdownController {
 
   static async getMarkdownById(req: Request, res: Response) {
     try {
-      const markdown = await MarkdownService.getMarkdownById(Number(req.params.id));
+      const markdown = await MarkdownService.getMarkdownById(
+        Number(req.params.id)
+      );
       if (markdown) {
         res.status(HTTP_STATUS.OK).json({
           message: MARKDOWN_MESSAGES.RETRIEVE_SINGLE_SUCCESS,
@@ -41,6 +43,23 @@ export class MarkdownController {
     }
   }
 
+  static async getMarkdownsByUserId(req: Request, res: Response) {
+    try {
+      const markdowns = await MarkdownService.getMarkdownsByUserId(
+        Number(req.params.user_id)
+      );
+      res.status(HTTP_STATUS.OK).json({
+        message: MARKDOWN_MESSAGES.RETRIEVE_SUCCESS,
+        data: markdowns,
+      });
+    } catch (error: any) {
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: MARKDOWN_MESSAGES.RETRIEVE_FAILURE,
+        error: error.message,
+      });
+    }
+  }
+
   static async createMarkdown(req: Request, res: Response) {
     try {
       const markdown = await MarkdownService.createMarkdown(req.body);
@@ -49,25 +68,50 @@ export class MarkdownController {
         data: markdown,
       });
     } catch (error: any) {
-      res.status(HTTP_STATUS.BAD_REQUEST).json({
-        message: MARKDOWN_MESSAGES.CREATE_FAILURE,
-        error: error.message,
-      });
+      if (
+        error.message.includes(
+          "Unique constraint failed on the fields: (`user_id`)"
+        )
+      ) {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: MARKDOWN_MESSAGES.CREATE_FAILURE,
+          error: "Người dùng đã tạo markdown!!!!",
+        });
+      } else {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: MARKDOWN_MESSAGES.CREATE_FAILURE,
+          error: error.message,
+        });
+      }
     }
   }
 
   static async updateMarkdown(req: Request, res: Response) {
     try {
-      const markdown = await MarkdownService.updateMarkdown(Number(req.params.id), req.body);
+      const markdown = await MarkdownService.updateMarkdown(
+        Number(req.params.id),
+        req.body
+      );
       res.status(HTTP_STATUS.OK).json({
         message: MARKDOWN_MESSAGES.UPDATE_SUCCESS,
         data: markdown,
       });
     } catch (error: any) {
-      res.status(HTTP_STATUS.BAD_REQUEST).json({
-        message: MARKDOWN_MESSAGES.UPDATE_FAILURE,
-        error: error.message,
-      });
+      if (
+        error.message.includes(
+          "Unique constraint failed on the fields: (`user_id`)"
+        )
+      ) {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: MARKDOWN_MESSAGES.UPDATE_FAILURE,
+          error: "Người dùng đã tạo markdown!!!!",
+        });
+      } else {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: MARKDOWN_MESSAGES.UPDATE_FAILURE,
+          error: error.message,
+        });
+      }
     }
   }
 

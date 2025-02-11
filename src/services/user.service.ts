@@ -84,8 +84,5 @@ export async function loginUser(username: string, password: string) {
   // Loại bỏ mật khẩu khỏi phản hồi
   const { password: _, ...userWithoutPassword } = user;
 
-  return {
-    user: userWithoutPassword,
-    token,
-  };
+  return { token, user: userWithoutPassword };
 }
