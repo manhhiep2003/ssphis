@@ -53,3 +53,17 @@ export const APPOINTMENTS_MESSAGES = {
   RETRIEVE_SINGLE_FAILURE: "Failed to retrieve Time Slot",
   NOT_FOUND: "Time Slot not found",
 } as const;
+
+export const MARKDOWN_MESSAGES = {
+  RETRIEVE_SUCCESS: "Markdowns retrieved successfully",
+  RETRIEVE_FAILURE: "Failed to retrieve markdowns",
+  RETRIEVE_SINGLE_SUCCESS: "Markdown retrieved successfully",
+  RETRIEVE_SINGLE_FAILURE: "Failed to retrieve markdown",
+  NOT_FOUND: "Markdown not found",
+  CREATE_SUCCESS: "Markdown created successfully",
+  CREATE_FAILURE: "Failed to create markdown",
+  UPDATE_SUCCESS: "Markdown updated successfully",
+  UPDATE_FAILURE: "Failed to update markdown",
+  DELETE_SUCCESS: "Markdown deleted successfully",
+  DELETE_FAILURE: "Failed to delete markdown",
+} as const;
