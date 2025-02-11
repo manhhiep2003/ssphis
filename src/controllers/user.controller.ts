@@ -8,9 +8,18 @@ export async function createUserHandler(
   req: Request,
   res: Response
 ): Promise<void> {
-  const { username, email, password,userCode,firstName,
-    lastName, phone, gender, createdBy, roleCode } =
-    req.body;
+  const {
+    username,
+    email,
+    password,
+    userCode,
+    firstName,
+    lastName,
+    phone,
+    gender,
+    createdBy,
+    roleCode,
+  } = req.body;
 
   if (!username || !email || !password || !phone || !roleCode) {
     res
@@ -78,9 +87,9 @@ export async function loginUserHandler(
     };
 
     res.status(HTTP_STATUS.OK).json({
+      token,
       message: USERS_MESSAGES.LOGIN_SUCCESS,
       user: userWithoutBigInt,
-      token,
     });
   } catch (error: any) {
     console.error(error);
