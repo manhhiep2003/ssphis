@@ -15,6 +15,9 @@ export class AppointmentsService {
         user: true,
         timeSlot: true,
       },
+      orderBy: {
+        date: "asc",
+      },
     });
 
     return appointments.map((appointment) => ({
