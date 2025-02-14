@@ -67,3 +67,17 @@ export const MARKDOWN_MESSAGES = {
   DELETE_SUCCESS: "Markdown deleted successfully",
   DELETE_FAILURE: "Failed to delete markdown",
 } as const;
+
+export const CATEGORY_MESSAGES = {
+  RETRIEVE_SUCCESS: "Categories retrieved successfully",
+  RETRIEVE_FAILURE: "Failed to retrieve Categories",
+  RETRIEVE_SINGLE_SUCCESS: "Category retrieved successfully",
+  RETRIEVE_SINGLE_FAILURE: "Failed to retrieve Category",
+  NOT_FOUND: "Category not found",
+  CREATE_SUCCESS: "Category created successfully",
+  CREATE_FAILURE: "Failed to create Category",
+  UPDATE_SUCCESS: "Category updated successfully",
+  UPDATE_FAILURE: "Failed to update Category",
+  DELETE_SUCCESS: "Category deleted successfully",
+  DELETE_FAILURE: "Failed to delete Category",
+} as const;
