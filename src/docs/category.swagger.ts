@@ -31,7 +31,6 @@
  *   description: API for managing category
  */
 
-
 /**
  * @swagger
  * /api/category:

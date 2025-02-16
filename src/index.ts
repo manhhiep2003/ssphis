@@ -6,6 +6,9 @@ import timeSlotRoutes from "./routes/timeSlot.routes";
 import appointmentsRoutes from "./routes/appointments.routes";
 import markdownRotes from "./routes/markdown.routes";
 import categoryRoutes from "./routes/category.routes";
+import surveyRoutes from "./routes/survey.routes";
+import programRoutes from "./routes/program.routes";
+import questionRoutes from "./routes/question.routes";
 import swagger from "./swagger";
 import cors from "cors";
 dotenv.config();
@@ -21,6 +24,9 @@ app.use("/api", timeSlotRoutes);
 app.use("/api", appointmentsRoutes);
 app.use("/api", markdownRotes);
 app.use("/api", categoryRoutes);
+app.use("/api", surveyRoutes);
+app.use("/api", programRoutes);
+app.use("/api", questionRoutes);
 swagger(app);
 
 app.listen(PORT, () => {

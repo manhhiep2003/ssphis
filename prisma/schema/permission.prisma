@@ -1,11 +1,11 @@
 model Permission {
-    id             BigInt @id @default(autoincrement())
-    permissionName String @unique @map("permission_name") @db.VarChar(50)
+  id             BigInt @id @default(autoincrement())
+  permissionName String @unique @map("permission_name") @db.VarChar(50)
 
-    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  createdBy String?   @map("created_by") @db.VarChar(36)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  createdBy String?  @map("created_by") @db.VarChar(36)
   updatedAt DateTime @updatedAt @map("modified_at") @db.Timestamptz(3)
   updatedBy String?  @map("modified_by") @db.VarChar(36)
 
-    @@map("permission")
+  @@map("permission")
 }

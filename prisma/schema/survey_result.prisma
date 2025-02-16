@@ -1,0 +1,15 @@
+model SurveyResult {
+    surveyResultId BigInt @id @default(autoincrement()) @map("survey_result_id")
+    userId         BigInt @map("user_id")
+    user           User   @relation(fields: [userId], references: [id])
+    surveyId       BigInt @map("survey_id")
+    survey         Survey @relation(fields: [surveyId], references: [surveyId])
+
+    createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
+    createdBy          String?              @map("created_by") @db.VarChar(36)
+    updatedAt          DateTime?            @updatedAt @map("modified_at") @db.Timestamptz(3)
+    updatedBy          String?              @map("modified_by") @db.VarChar(36)
+    SurveyResultDetail SurveyResultDetail[]
+
+    @@map("survey_result")
+}

@@ -14,10 +14,10 @@
  *             properties:
  *               username:
  *                 type: string
- *                 example: johndoe
+ *                 example: "johndoe"
  *               email:
  *                 type: string
- *                 example: johndoe@example.com
+ *                 example: "johndoe@example.com"
  *               password:
  *                 type: string
  *                 example: "password123"
@@ -28,8 +28,8 @@
  *                 type: string
  *                 example: "John"
  *               lastName:
- *                type: string
- *               example: "Doe"
+ *                 type: string
+ *                 example: "Doe"
  *               phone:
  *                 type: string
  *                 example: "1234567890"

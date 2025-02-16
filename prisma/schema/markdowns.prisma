@@ -1,13 +1,14 @@
 model Markdown {
-  id              Int      @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   contentHtml     String
   contentMarkdown String
   description     String
-  user_id         BigInt   @unique
-  user            User     @relation(fields: [user_id], references: [id])
-  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  user_id         BigInt    @unique
+  user            User      @relation(fields: [user_id], references: [id])
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
   createdBy       String?   @map("created_by") @db.VarChar(36)
   updatedAt       DateTime? @updatedAt @map("modified_at") @db.Timestamptz(3)
-  updatedBy       String?  @map("modified_by") @db.VarChar(36)
+  updatedBy       String?   @map("modified_by") @db.VarChar(36)
+
   @@map("markdowns")
 }

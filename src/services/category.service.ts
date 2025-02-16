@@ -11,8 +11,13 @@ export class CategoryService {
     return prisma.category.create({ data });
   }
 
-  static async getAllCategories(): Promise<Category[]> {
-    return prisma.category.findMany();
+  static async getAllCategories() {
+    const categories = await prisma.category.findMany();
+    const serializedCategories = categories.map((category) => ({
+      ...category,
+      categoryId: category.categoryId.toString(),
+    }));
+    return serializedCategories;
   }
 
   static async getCategoryById(categoryId: number) {

@@ -1,16 +1,16 @@
 model Appointments {
-  appointment_id Int      @id @default(autoincrement())
+  appointment_id Int               @id @default(autoincrement())
   user_id        BigInt
   time_slot_id   Int
-  date           DateTime 
+  date           DateTime
   status         AppointmentStatus @default(Pending)
-  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  createdBy      String?   @map("created_by") @db.VarChar(36)
-  updatedAt      DateTime? @updatedAt @map("modified_at") @db.Timestamptz(3)
-  updatedBy      String?  @map("modified_by") @db.VarChar(36)
-  user           User @relation(fields: [user_id], references: [id])
-  timeSlot       Time_Slots @relation(fields: [time_slot_id], references: [time_slot_id])
-  
+  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  createdBy      String?           @map("created_by") @db.VarChar(36)
+  updatedAt      DateTime?         @updatedAt @map("modified_at") @db.Timestamptz(3)
+  updatedBy      String?           @map("modified_by") @db.VarChar(36)
+  user           User              @relation(fields: [user_id], references: [id])
+  timeSlot       Time_Slots        @relation(fields: [time_slot_id], references: [time_slot_id])
+
   @@map("appointments")
 }
 

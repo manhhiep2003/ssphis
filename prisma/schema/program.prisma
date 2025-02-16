@@ -1,0 +1,14 @@
+model Program {
+    programId   BigInt   @id @default(autoincrement()) @map("program_id")
+    title       String   @map("title") @db.VarChar(50)
+    description String?  @map("description") @db.Text()
+    categoryId  BigInt   @map("category_id")
+    category    Category @relation(fields: [categoryId], references: [categoryId])
+
+    createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+    createdBy String?   @map("created_by") @db.VarChar(36)
+    updatedAt DateTime? @updatedAt @map("modified_at") @db.Timestamptz(3)
+    updatedBy String?   @map("modified_by") @db.VarChar(36)
+
+    @@map("program")
+}

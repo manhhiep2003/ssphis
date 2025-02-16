@@ -81,3 +81,45 @@ export const CATEGORY_MESSAGES = {
   DELETE_SUCCESS: "Category deleted successfully",
   DELETE_FAILURE: "Failed to delete Category",
 } as const;
+
+export const SURVEY_MESSAGES = {
+  RETRIEVE_SUCCESS: "Surveys retrieved successfully",
+  RETRIEVE_FAILURE: "Failed to retrieve Surveys",
+  RETRIEVE_SINGLE_SUCCESS: "Survey retrieved successfully",
+  RETRIEVE_SINGLE_FAILURE: "Failed to retrieve Survey",
+  NOT_FOUND: "Survey not found",
+  CREATE_SUCCESS: "Survey created successfully",
+  CREATE_FAILURE: "Failed to create Survey",
+  UPDATE_SUCCESS: "Survey updated successfully",
+  UPDATE_FAILURE: "Failed to update Survey",
+  DELETE_SUCCESS: "Survey deleted successfully",
+  DELETE_FAILURE: "Failed to delete Survey",
+} as const;
+
+export const PROGRAM_MESSAGES = {
+  RETRIEVE_SUCCESS: "Programs retrieved successfully",
+  RETRIEVE_FAILURE: "Failed to retrieve Programs",
+  RETRIEVE_SINGLE_SUCCESS: "Program retrieved successfully",
+  RETRIEVE_SINGLE_FAILURE: "Failed to retrieve Program",
+  NOT_FOUND: "Program not found",
+  CREATE_SUCCESS: "Program created successfully",
+  CREATE_FAILURE: "Failed to create Program",
+  UPDATE_SUCCESS: "Program updated successfully",
+  UPDATE_FAILURE: "Failed to update Program",
+  DELETE_SUCCESS: "Program deleted successfully",
+  DELETE_FAILURE: "Failed to delete Program",
+} as const;
+
+export const QUESTION_MESSAGES = {
+  RETRIEVE_SUCCESS: "Questions retrieved successfully",
+  RETRIEVE_FAILURE: "Failed to retrieve Questions",
+  RETRIEVE_SINGLE_SUCCESS: "Question retrieved successfully",
+  RETRIEVE_SINGLE_FAILURE: "Failed to retrieve Question",
+  NOT_FOUND: "Question not found",
+  CREATE_SUCCESS: "Question created successfully",
+  CREATE_FAILURE: "Failed to create Question",
+  UPDATE_SUCCESS: "Question updated successfully",
+  UPDATE_FAILURE: "Failed to update Question",
+  DELETE_SUCCESS: "Question deleted successfully",
+  DELETE_FAILURE: "Failed to delete Question",
+} as const;

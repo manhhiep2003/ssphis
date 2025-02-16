@@ -1,17 +1,17 @@
 model Time_Slots {
-  time_slot_id Int      @id @default(autoincrement())
+  time_slot_id Int       @id @default(autoincrement())
   user_id      BigInt
-  start_time   String   @map("start_time")
-  end_time     String   @map("end_time")
-  status       Status   @default(Available)
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
-  createdBy String?   @map("created_by") @db.VarChar(36)
-  updatedAt DateTime? @updatedAt @map("modified_at") @db.Timestamptz(3)
-  updatedBy String?  @map("modified_by") @db.VarChar(36)
+  start_time   String    @map("start_time")
+  end_time     String    @map("end_time")
+  status       Status    @default(Available)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  createdBy    String?   @map("created_by") @db.VarChar(36)
+  updatedAt    DateTime? @updatedAt @map("modified_at") @db.Timestamptz(3)
+  updatedBy    String?   @map("modified_by") @db.VarChar(36)
 
-  user         User     @relation(fields: [user_id], references: [id])
+  user         User           @relation(fields: [user_id], references: [id])
   appointments Appointments[]
-  
+
   @@map("time_slots")
 }
 
