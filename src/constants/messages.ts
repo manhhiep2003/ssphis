@@ -137,3 +137,17 @@ export const QUESTION_OPTION_MESSAGES = {
   DELETE_SUCCESS: "Question option deleted successfully",
   DELETE_FAILURE: "Failed to delete Question option",
 } as const;
+
+export const SURVEY_RESULT_MESSAGES = {
+  RETRIEVE_SUCCESS: "Survey results retrieved successfully",
+  RETRIEVE_FAILURE: "Failed to retrieve Survey results",
+  RETRIEVE_SINGLE_SUCCESS: "Survey result retrieved successfully",
+  RETRIEVE_SINGLE_FAILURE: "Failed to retrieve Survey result",
+  NOT_FOUND: "Survey result not found",
+  CREATE_SUCCESS: "Survey result created successfully",
+  CREATE_FAILURE: "Failed to create Survey result",
+  UPDATE_SUCCESS: "Survey result updated successfully",
+  UPDATE_FAILURE: "Failed to update Survey result",
+  DELETE_SUCCESS: "Survey result deleted successfully",
+  DELETE_FAILURE: "Failed to delete Survey result",
+} as const;
