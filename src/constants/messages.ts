@@ -123,3 +123,17 @@ export const QUESTION_MESSAGES = {
   DELETE_SUCCESS: "Question deleted successfully",
   DELETE_FAILURE: "Failed to delete Question",
 } as const;
+
+export const QUESTION_OPTION_MESSAGES = {
+  RETRIEVE_SUCCESS: "Question options retrieved successfully",
+  RETRIEVE_FAILURE: "Failed to retrieve Question options",
+  RETRIEVE_SINGLE_SUCCESS: "Question option retrieved successfully",
+  RETRIEVE_SINGLE_FAILURE: "Failed to retrieve Question option",
+  NOT_FOUND: "Question option not found",
+  CREATE_SUCCESS: "Question option created successfully",
+  CREATE_FAILURE: "Failed to create Question option",
+  UPDATE_SUCCESS: "Question option updated successfully",
+  UPDATE_FAILURE: "Failed to update Question option",
+  DELETE_SUCCESS: "Question option deleted successfully",
+  DELETE_FAILURE: "Failed to delete Question option",
+} as const;

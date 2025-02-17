@@ -9,6 +9,7 @@ import categoryRoutes from "./routes/category.routes";
 import surveyRoutes from "./routes/survey.routes";
 import programRoutes from "./routes/program.routes";
 import questionRoutes from "./routes/question.routes";
+import questionOptionRoutes from "./routes/questionOption.routes";
 import swagger from "./swagger";
 import cors from "cors";
 dotenv.config();
@@ -27,6 +28,7 @@ app.use("/api", categoryRoutes);
 app.use("/api", surveyRoutes);
 app.use("/api", programRoutes);
 app.use("/api", questionRoutes);
+app.use("/api", questionOptionRoutes);
 swagger(app);
 
 app.listen(PORT, () => {
