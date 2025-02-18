@@ -2,9 +2,14 @@ model Markdown {
   id              Int       @id @default(autoincrement())
   contentHtml     String
   contentMarkdown String
+  imgageUrl       String
+  title           String
+  hashtag         String[]
   description     String
-  user_id         BigInt    @unique
+  user_id         BigInt    
+  category_id     BigInt    
   user            User      @relation(fields: [user_id], references: [id])
+  category        Category  @relation(fields: [category_id], references: [categoryId])
   createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
   createdBy       String?   @map("created_by") @db.VarChar(36)
   updatedAt       DateTime? @updatedAt @map("modified_at") @db.Timestamptz(3)

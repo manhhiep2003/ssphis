@@ -68,14 +68,10 @@ export class MarkdownController {
         data: markdown,
       });
     } catch (error: any) {
-      if (
-        error.message.includes(
-          "Unique constraint failed on the fields: (`user_id`)"
-        )
-      ) {
+      if (error.message.includes("Foreign key constraint failed")) {
         res.status(HTTP_STATUS.BAD_REQUEST).json({
           message: MARKDOWN_MESSAGES.CREATE_FAILURE,
-          error: "Người dùng đã tạo markdown!!!!",
+          error: "Invalid user_id or category_id",
         });
       } else {
         res.status(HTTP_STATUS.BAD_REQUEST).json({
@@ -97,14 +93,10 @@ export class MarkdownController {
         data: markdown,
       });
     } catch (error: any) {
-      if (
-        error.message.includes(
-          "Unique constraint failed on the fields: (`user_id`)"
-        )
-      ) {
+      if (error.message.includes("Foreign key constraint failed")) {
         res.status(HTTP_STATUS.BAD_REQUEST).json({
           message: MARKDOWN_MESSAGES.UPDATE_FAILURE,
-          error: "Người dùng đã tạo markdown!!!!",
+          error: "Invalid category_id",
         });
       } else {
         res.status(HTTP_STATUS.BAD_REQUEST).json({

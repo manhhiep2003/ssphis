@@ -9,6 +9,7 @@ model Category {
     updatedBy String?   @map("modified_by") @db.VarChar(36)
     Survey    Survey[]
     Program   Program[]
+    Markdown  Markdown[]
 
     @@map("category")
 }
