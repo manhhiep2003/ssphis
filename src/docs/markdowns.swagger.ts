@@ -78,15 +78,41 @@
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - contentHtml
+ *               - contentMarkdown
+ *               - title
+ *               - description
+ *               - user_id
+ *               - category_id
+ *               - imgageUrl
  *             properties:
  *               contentHtml:
  *                 type: string
+ *                 description: HTML content of the markdown
  *               contentMarkdown:
  *                 type: string
+ *                 description: Raw markdown content
+ *               imgageUrl:
+ *                 type: string
+ *                 description: URL of the associated image
+ *               title:
+ *                 type: string
+ *                 description: Title of the markdown
+ *               hashtag:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Array of hashtags
  *               description:
  *                 type: string
+ *                 description: Description of the markdown
  *               user_id:
  *                 type: integer
+ *                 description: ID of the user creating the markdown
+ *               category_id:
+ *                 type: integer
+ *                 description: ID of the associated category
  *     responses:
  *       201:
  *         description: Successfully created markdown
@@ -94,6 +120,8 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Markdown'
+ *       400:
+ *         description: Bad request - Missing or invalid fields
  *       500:
  *         description: Internal server error
  */
@@ -154,8 +182,18 @@
  *                 type: string
  *               contentMarkdown:
  *                 type: string
+ *               imgageUrl:
+ *                 type: string
+ *               title:
+ *                 type: string
+ *               hashtag:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *               description:
  *                 type: string
+ *               category_id:
+ *                 type: integer
  *     responses:
  *       200:
  *         description: Successfully updated the markdown
@@ -163,10 +201,13 @@
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Markdown'
+ *       400:
+ *         description: Bad request - Invalid fields
+ *       404:
+ *         description: Markdown not found
  *       500:
  *         description: Internal server error
  */
-
 /**
  * @swagger
  * /api/markdowns/{id}:
@@ -195,15 +236,35 @@
  *   schemas:
  *     Markdown:
  *       type: object
+ *       required:
+ *         - contentHtml
+ *         - contentMarkdown
+ *         - title
+ *         - description
+ *         - user_id
+ *         - category_id
+ *         - imgageUrl
  *       properties:
  *         id:
  *           type: integer
- *         user_id:
- *           type: integer
+ *         contentHtml:
+ *           type: string
+ *         contentMarkdown:
+ *           type: string
+ *         imgageUrl:
+ *           type: string
  *         title:
  *           type: string
- *         content:
+ *         hashtag:
+ *           type: array
+ *           items:
+ *             type: string
+ *         description:
  *           type: string
+ *         user_id:
+ *           type: integer
+ *         category_id:
+ *           type: integer
  *         created_at:
  *           type: string
  *           format: date-time

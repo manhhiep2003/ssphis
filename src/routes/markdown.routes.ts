@@ -14,7 +14,7 @@ router.post(
   validateMarkdownRequest,
   MarkdownController.createMarkdown
 );
-router.put("/markdowns/:id", verifyToken, MarkdownController.updateMarkdown);
+router.put("/markdowns/:id", verifyToken,validateMarkdownRequest, MarkdownController.updateMarkdown);
 router.delete("/markdowns/:id", verifyToken, MarkdownController.deleteMarkdown);
 
 export default router;

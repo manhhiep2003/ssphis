@@ -17,7 +17,7 @@ model User {
   role         Role?          @relation(fields: [roleCode], references: [roleCode])
   timeSlots    Time_Slots[]   @relation()
   appointments Appointments[]
-  markdown     Markdown?
+  markdown     Markdown[]
   SurveyResult SurveyResult[]
 
   @@map("user")
