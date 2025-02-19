@@ -7,6 +7,7 @@ export enum AppointmentStatus {
   Pending = "Pending",
   Approved = "Approved",
   Cancelled = "Cancelled",
+  Completed = "Completed",
 }
 export class AppointmentsService {
   static async getAllAppointments() {
@@ -79,13 +80,17 @@ export class AppointmentsService {
     // Tạo điều kiện tìm kiếm với `status` nếu có
     const whereCondition: any = { user_id };
     if (status) {
-      whereCondition.status = status; // Nếu status có, thêm điều kiện status vào tìm kiếm
+      whereCondition.status = status;
     }
+
     const appointments = await prisma.appointments.findMany({
       where: whereCondition,
       include: {
         user: true,
         timeSlot: true,
+      },
+      orderBy: {
+        date: "desc",
       },
     });
 
@@ -157,7 +162,7 @@ export class AppointmentsService {
     const updatedAppointment = await prisma.appointments.update({
       where: { appointment_id },
       data: {
-        status: data.status, // Chỉ cập nhật status
+        status: data.status as any, // Chỉ cập nhật status
       },
     });
     // Nếu status của cuộc hẹn là "Approved", cập nhật status của timeSlot thành "Booked"
@@ -168,6 +173,15 @@ export class AppointmentsService {
         },
         data: {
           status: Status.Booked, // Cập nhật status của time slot thành "Booked"
+        },
+      });
+    } else if (data.status === AppointmentStatus.Completed) {
+      await prisma.time_Slots.update({
+        where: {
+          time_slot_id: updatedAppointment.time_slot_id,
+        },
+        data: {
+          status: Status.Available,
         },
       });
     }

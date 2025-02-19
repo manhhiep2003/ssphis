@@ -7,7 +7,7 @@ const router = Router();
 
 router.get("/markdowns", verifyToken, MarkdownController.getAllMarkdowns);
 router.get("/markdowns/:id", verifyToken, MarkdownController.getMarkdownById);
-router.get("/markdowns/:user_id", verifyToken, MarkdownController.getMarkdownsByUserId);
+router.get("/markdowns/user/:user_id", verifyToken, MarkdownController.getMarkdownsByUserId);
 router.post(
   "/markdowns",
   verifyToken,

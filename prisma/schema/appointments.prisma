@@ -18,4 +18,5 @@ enum AppointmentStatus {
   Pending
   Approved
   Cancelled
+  Completed
 }
