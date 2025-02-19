@@ -9,6 +9,8 @@ model Program {
     organizerEmail String?  @map("organizer_email") @db.VarChar(100)
     contactPhone   String?  @map("contact_phone") @db.VarChar(20)
     imageUrl       String?  @map("image_url") @db.Text()
+    price          Decimal? @map("price") @db.Decimal(18, 2)
+    rating         Float?   @map("rating")
     categoryId     BigInt   @map("category_id")
     category       Category @relation(fields: [categoryId], references: [categoryId])
 
