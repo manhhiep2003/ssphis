@@ -128,7 +128,7 @@
 
 /**
  * @swagger
- * /api/markdowns/{user_id}:
+ * /api/markdowns/user/{user_id}:
  *   get:
  *     summary: Retrieve markdowns by user ID
  *     tags: [Markdowns]
@@ -147,11 +147,18 @@
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Markdown'
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Markdown'
+ *       400:
+ *         description: Bad request - Invalid user_id format
  *       404:
- *         description: User not found
+ *         description: No markdowns found for this user
  *       500:
  *         description: Internal server error
  */

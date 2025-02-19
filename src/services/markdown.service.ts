@@ -49,7 +49,13 @@ export class MarkdownService {
   }
 
   static async getMarkdownsByUserId(user_id: number) {
-    const markdowns = await prisma.markdown.findMany({ where: { user_id } });
+    const markdowns = await prisma.markdown.findMany({
+      where: { user_id },
+      include: {
+        user: true, // Fetch user details
+        category: true, // Fetch category details
+      },
+    });
     return markdowns.map(serializeMarkdown);
   }
 
@@ -76,7 +82,9 @@ export class MarkdownService {
     } catch (error: any) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === "P2003") {
-          throw new Error("Foreign key constraint failed - Invalid user_id or category_id");
+          throw new Error(
+            "Foreign key constraint failed - Invalid user_id or category_id"
+          );
         }
       }
       throw error;

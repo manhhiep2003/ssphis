@@ -49,7 +49,6 @@ export class TimeSlotService {
         user: true, // Fetch user details
       },
     });
-    console.log(timeSlots);
 
     return timeSlots.map((slot) => ({
       ...slot,

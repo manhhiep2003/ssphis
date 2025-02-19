@@ -48,6 +48,15 @@ export class MarkdownController {
       const markdowns = await MarkdownService.getMarkdownsByUserId(
         Number(req.params.user_id)
       );
+      // console.log("Markdowns:", req.params.user_id);
+      
+      if (!markdowns || markdowns.length === 0) {
+         res.status(HTTP_STATUS.NOT_FOUND).json({
+          message: MARKDOWN_MESSAGES.NOT_FOUND,
+          data: []
+        });
+        return;
+      }
       res.status(HTTP_STATUS.OK).json({
         message: MARKDOWN_MESSAGES.RETRIEVE_SUCCESS,
         data: markdowns,

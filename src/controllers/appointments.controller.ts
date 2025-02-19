@@ -47,12 +47,18 @@ export class AppointmentsController {
   static async getAppointmentsByUserId(req: Request, res: Response) {
     try {
       const user_id = Number(req.query.user_id);
-      const status = req.query.status as AppointmentStatus
-      // Truyền status vào service nếu có, nếu không thì sẽ bỏ qua
-    const appointments = await AppointmentsService.getAppointmentsByUserId(
-      user_id,
-      status
-    );
+      // Add proper type validation for status
+      const statusParam = req.query.status as string;
+      let status: AppointmentStatus | undefined;
+      
+      if (statusParam && Object.values(AppointmentStatus).includes(statusParam as AppointmentStatus)) {
+        status = statusParam as AppointmentStatus;
+      }
+
+      const appointments = await AppointmentsService.getAppointmentsByUserId(
+        user_id,
+        status
+      );
       if (appointments.length > 0) {
         res.status(HTTP_STATUS.OK).json({
           message: APPOINTMENTS_MESSAGES.RETRIEVE_SUCCESS,

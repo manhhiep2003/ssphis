@@ -83,7 +83,7 @@
  *         name: status
  *         schema:
  *           type: string
- *           enum: [Pending, Approved, Cancelled]
+ *           enum: [Pending, Approved, Cancelled, Completed]
  *         required: false
  *         description: The status of the appointments to retrieve
  *     responses:
@@ -217,7 +217,7 @@
  *           format: date-time
  *         status:
  *           type: string
- *           enum: [Pending, Approved, Cancelled]
+ *           enum: [Pending, Approved, Cancelled, Completed]
  *         created_at:
  *           type: string
  *           format: date-time
