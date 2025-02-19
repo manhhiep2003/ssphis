@@ -10,7 +10,7 @@ model Program {
     contactPhone   String?  @map("contact_phone") @db.VarChar(20)
     imageUrl       String?  @map("image_url") @db.Text()
     price          Decimal? @map("price") @db.Decimal(18, 2)
-    rating         Float?   @map("rating")
+    rating         Int?     @map("rating") @db.Integer()
     categoryId     BigInt   @map("category_id")
     category       Category @relation(fields: [categoryId], references: [categoryId])
 
