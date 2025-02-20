@@ -1,17 +1,35 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 export class ProgramService {
   static async createProgram(data: {
     title: string;
     description?: string;
+    startDate: Date;
+    endDate: Date;
+    targetAudience?: string;
+    location?: string;
+    organizerEmail?: string;
+    contactPhone?: string;
+    imageUrl?: string;
     categoryId: bigint;
+    price?: Prisma.Decimal;
+    rating?: number;
   }) {
     return await prisma.program.create({
       data: {
         title: data.title,
         description: data.description,
         categoryId: data.categoryId,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        targetAudience: data.targetAudience,
+        location: data.location,
+        organizerEmail: data.organizerEmail,
+        contactPhone: data.contactPhone,
+        imageUrl: data.imageUrl,
+        price: data.price,
+        rating: data.rating,
       },
     });
   }

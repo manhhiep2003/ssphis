@@ -7,10 +7,32 @@ import { PROGRAM_MESSAGES } from "../constants/messages";
 export class ProgramController {
   static async createProgram(req: Request, res: Response) {
     try {
-      const { title, description, categoryId } = req.body;
+      const {
+        title,
+        description,
+        categoryId,
+        startDate,
+        endDate,
+        targetAudience,
+        location,
+        organizerEmail,
+        contactPhone,
+        imageUrl,
+        price,
+        rating,
+      } = req.body;
       const newProgram = await ProgramService.createProgram({
         title,
         description,
+        startDate,
+        endDate,
+        targetAudience,
+        location,
+        organizerEmail,
+        contactPhone,
+        imageUrl,
+        price,
+        rating,
         categoryId: BigInt(categoryId),
       });
 
@@ -34,7 +56,9 @@ export class ProgramController {
 
   static async getProgramById(req: Request, res: Response) {
     try {
-      const program = await ProgramService.getProgramById(Number(req.params.id));
+      const program = await ProgramService.getProgramById(
+        Number(req.params.id)
+      );
       if (program) {
         res.status(HTTP_STATUS.OK).json({
           message: PROGRAM_MESSAGES.RETRIEVE_SINGLE_SUCCESS,
