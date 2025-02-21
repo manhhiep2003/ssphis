@@ -13,6 +13,7 @@ import questionOptionRoutes from "./routes/questionOption.routes";
 import surveyResultRoutes from "./routes/surveyResult.routes";
 import swagger from "./swagger";
 import cors from "cors";
+// import { CronService } from "./services/cron.service";
 dotenv.config();
 
 const app = express();
@@ -31,6 +32,7 @@ app.use("/api", programRoutes);
 app.use("/api", questionRoutes);
 app.use("/api", questionOptionRoutes);
 app.use("/api", surveyResultRoutes);
+// CronService.initCronJobs();
 swagger(app);
 
 app.listen(PORT, () => {

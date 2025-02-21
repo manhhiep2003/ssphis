@@ -69,7 +69,12 @@ export class TimeSlotController {
   ): Promise<void> {
     try {
       const { user_id, slots } = req.body;
-      const timeSlots = await TimeSlotService.createTimeSlots(user_id, slots);
+      const createdBy = (req as any).user?.id?.toString();
+      const timeSlots = await TimeSlotService.createTimeSlots(
+        user_id,
+        slots,
+        createdBy
+      );
       res.status(HTTP_STATUS.CREATED).json({
         message: TIMESLOT_MESSAGES.CREATE_SUCCESS,
         data: timeSlots.slots,
@@ -87,12 +92,17 @@ export class TimeSlotController {
     try {
       const time_slot_id = Number(req.params.id);
       const { start_time, end_time, status } = req.body;
-      const updatedSlot = await TimeSlotService.updateTimeSlot(time_slot_id, {
-        start_time,
-        end_time,
-        status,
-      });
-      console.log("Updated slot:", updatedSlot);
+      const updatedBy = (req as any).user?.id?.toString();
+
+      const updatedSlot = await TimeSlotService.updateTimeSlot(
+        time_slot_id,
+        {
+          start_time,
+          end_time,
+          status,
+        },
+        updatedBy
+      );
 
       // ✅ Convert BigInt to String
       const formattedSlot = {
@@ -125,4 +135,28 @@ export class TimeSlotController {
       });
     }
   }
+
+  // static async autoUpdateStatus(req: Request, res: Response) {
+  //   try {
+  //     const result = await TimeSlotService.autoUpdateTimeSlotStatus();
+  //     res.status(HTTP_STATUS.OK).json(result);
+  //   } catch (error: any) {
+  //     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+  //       message: "Failed to auto update time slot status",
+  //       error: error.message,
+  //     });
+  //   }
+  // }
+
+  // static async resetDailySlots(req: Request, res: Response) {
+  //   try {
+  //     const result = await TimeSlotService.resetDailyTimeSlots();
+  //     res.status(HTTP_STATUS.OK).json(result);
+  //   } catch (error: any) {
+  //     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+  //       message: "Failed to reset daily time slots",
+  //       error: error.message,
+  //     });
+  //   }
+  // }
 }

@@ -65,7 +65,8 @@ export class TimeSlotService {
 
   static async createTimeSlots(
     user_id: number,
-    slots: { start_time: string; end_time: string }[]
+    slots: { start_time: string; end_time: string }[],
+    createdBy: string
   ) {
     const validSlots = slots.filter((slot) => slot.start_time && slot.end_time);
 
@@ -75,6 +76,7 @@ export class TimeSlotService {
         start_time,
         end_time,
         status: Status.Available,
+        createdBy,
       })),
     });
     return { createdSlots, slots };
@@ -82,7 +84,8 @@ export class TimeSlotService {
 
   static async updateTimeSlot(
     time_slot_id: number,
-    data: { start_time?: string; end_time?: string; status?: Status }
+    data: { start_time?: string; end_time?: string; status?: Status },
+    updatedBy: string
   ) {
     if (data.start_time) {
       const existingSlot = await prisma.time_Slots.findFirst({
@@ -94,7 +97,11 @@ export class TimeSlotService {
     }
     const updatedSlot = await prisma.time_Slots.update({
       where: { time_slot_id },
-      data,
+      data: {
+        ...data,
+        updatedBy, // Add from token
+        updatedAt: new Date(),
+      },
     });
     return {
       ...updatedSlot,
@@ -113,4 +120,82 @@ export class TimeSlotService {
       user_id: deletedSlot.user_id.toString(),
     };
   }
+
+  // static async autoUpdateTimeSlotStatus() {
+  //   try {
+  //     const now = new Date();
+  //     const currentTime = now.getHours() * 60 + now.getMinutes(); // Convert current time to minutes
+  //     const allTimeSlots = await prisma.time_Slots.findMany();
+
+  //     const updatePromises = allTimeSlots.map(async (slot) => {
+  //       // Convert time strings to minutes since midnight
+  //       const [startHours, startMinutes] = slot.start_time.split(":");
+  //       const [endHours, endMinutes] = slot.end_time.split(":");
+
+  //       const startTimeInMinutes =
+  //         parseInt(startHours) * 60 + parseInt(startMinutes);
+  //       const endTimeInMinutes = parseInt(endHours) * 60 + parseInt(endMinutes);
+  //       // console.log(startTimeInMinutes, endTimeInMinutes);
+  //       // console.log(currentTime);
+        
+  //       let isCurrentlyActive;
+  //       if (endTimeInMinutes < startTimeInMinutes) {
+  //         // Handle overnight slots (e.g., 23:00 to 01:00)
+  //         isCurrentlyActive =
+  //           currentTime >= startTimeInMinutes ||
+  //           currentTime <= endTimeInMinutes;
+  //       } else {
+  //         // Handle same-day slots
+  //         isCurrentlyActive =
+  //           // currentTime >= startTimeInMinutes &&
+  //           currentTime >= endTimeInMinutes;
+  //       }
+  //       // console.log(isCurrentlyActive && slot.status !== Status.Booked);
+
+  //       if (isCurrentlyActive && slot.status !== Status.Booked) {
+  //         return prisma.time_Slots.update({
+  //           where: { time_slot_id: slot.time_slot_id },
+  //           data: {
+  //             status: Status.Booked,
+  //             updatedAt: now,
+  //             updatedBy: "system",
+  //           },
+  //         });
+  //       } else if (!isCurrentlyActive && slot.status === Status.Booked) {
+  //         return prisma.time_Slots.update({
+  //           where: { time_slot_id: slot.time_slot_id },
+  //           data: {
+  //             status: Status.Available,
+  //             updatedAt: now,
+  //             updatedBy: "system",
+  //           },
+  //         });
+  //       }
+  //     });
+
+  //     await Promise.all(updatePromises.filter(Boolean));
+  //     return { message: "Time slot statuses updated successfully" };
+  //   } catch (error: any) {
+  //     throw new Error(`Failed to update time slot statuses: ${error.message}`);
+  //   }
+  // }
+
+  // static async resetDailyTimeSlots() {
+  //   try {
+  //     await prisma.time_Slots.updateMany({
+  //       where: {
+  //         status: Status.Booked,
+  //       },
+  //       data: {
+  //         status: Status.Available,
+  //         updatedAt: new Date(),
+  //         updatedBy: "system",
+  //       },
+  //     });
+
+  //     return { message: "Daily time slot reset completed" };
+  //   } catch (error: any) {
+  //     throw new Error(`Failed to reset time slots: ${error.message}`);
+  //   }
+  // }
 }

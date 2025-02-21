@@ -165,7 +165,10 @@
  *             properties:
  *               status:
  *                 type: string
- *                 enum: [Pending, Approved, Cancelled]
+ *                 enum: [Pending, Approved, Cancelled, Completed]
+ *               linkMeeting:
+ *                 type: string
+ *                 description: URL for the meeting
  *     responses:
  *       200:
  *         description: Successfully updated the appointment
@@ -218,6 +221,8 @@
  *         status:
  *           type: string
  *           enum: [Pending, Approved, Cancelled, Completed]
+ *         linkMeeting:
+ *           type: string
  *         created_at:
  *           type: string
  *           format: date-time

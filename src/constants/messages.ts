@@ -6,6 +6,12 @@ export const USERS_MESSAGES = {
   LOGIN_FAILURE: "Invalid username or password.",
   MISSING_FIELDS: "All fields are required.",
   MISSING_CREDENTIALS: "Username and password are required.",
+  RETRIEVE_SUCCESS: "Users retrieved successfully",
+  RETRIEVE_FAILURE: "Failed to retrieve users",
+  ROLE_CODE_REQUIRED: "Role code is required",
+  NO_USERS_FOUND: "No users found for this role",
+  UPDATE_SUCCESS: "User profile updated successfully",
+  UPDATE_FAILURE: "Failed to update user profile",
 } as const;
 
 export const ROLES_MESSAGES = {
