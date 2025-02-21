@@ -114,29 +114,31 @@ export class AppointmentsService {
     }));
   }
 
-  static async createAppointments(user_id: number, appointments: any[]) {
+  static async createAppointments(
+    user_id: number,
+    appointments: any[],
+    createdBy: string
+  ) {
     const createdAppointments = [];
 
     for (const appointment of appointments) {
       const { time_slot_id, date } = appointment;
-      // Kiểm tra sự tồn tại của thời gian slot
+      // Check if time slot exists
       const timeSlot = await prisma.time_Slots.findUnique({
         where: { time_slot_id },
       });
-      // Mặc định status là "Pending"
+
       const status = AppointmentStatus.Pending;
-      // Tạo cuộc hẹn trong cơ sở dữ liệu
       const newAppointment = await prisma.appointments.create({
         data: {
           user_id,
           time_slot_id,
           date: new Date(date),
-          // Mặc định status là "Pending"
           status,
+          createdBy, // Add createdBy from token
         },
       });
 
-      // Thêm cuộc hẹn đã tạo vào mảng kết quả
       createdAppointments.push({
         ...newAppointment,
         appointment_id: newAppointment.appointment_id.toString(),
@@ -157,22 +159,28 @@ export class AppointmentsService {
 
   static async updateAppointments(
     appointment_id: number,
-    data: { status: AppointmentStatus } // Chỉ nhận status, không nhận date
+    data: { status: AppointmentStatus; linkMeeting?: string },
+    updatedBy: string
   ) {
     const updatedAppointment = await prisma.appointments.update({
       where: { appointment_id },
       data: {
-        status: data.status as any, // Chỉ cập nhật status
+        status: data.status as any,
+        linkMeeting: data.linkMeeting,
+        updatedBy, // Add updatedBy from token
+        updatedAt: new Date(),
       },
     });
-    // Nếu status của cuộc hẹn là "Approved", cập nhật status của timeSlot thành "Booked"
+
     if (data.status === AppointmentStatus.Approved) {
       await prisma.time_Slots.update({
         where: {
-          time_slot_id: updatedAppointment.time_slot_id, // Lấy time_slot_id của cuộc hẹn
+          time_slot_id: updatedAppointment.time_slot_id,
         },
         data: {
-          status: Status.Booked, // Cập nhật status của time slot thành "Booked"
+          status: Status.Booked,
+          updatedBy, // Add updatedBy for time slot
+          updatedAt: new Date(),
         },
       });
     } else if (data.status === AppointmentStatus.Completed) {
@@ -182,6 +190,8 @@ export class AppointmentsService {
         },
         data: {
           status: Status.Available,
+          updatedBy, // Add updatedBy for time slot
+          updatedAt: new Date(),
         },
       });
     }

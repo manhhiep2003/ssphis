@@ -86,3 +86,76 @@ export async function loginUser(username: string, password: string) {
 
   return { token, user: userWithoutPassword };
 }
+
+export async function getUserService() {
+  const users = await prisma.user.findMany({
+    include: {
+      role: true,
+    },
+  });
+  return users.map((user) => ({
+    ...user,
+    role: user.roleCode.toString(), // Convert BigInt to string if needed
+    user_id: user.id.toString(),
+  }));
+}
+
+export async function getUsersByRoleService(roleCode: string) {
+  const users = await prisma.user.findMany({
+    where: {
+      roleCode: roleCode,
+    },
+    include: {
+      role: true,
+    },
+  });
+  return users.map((user) => ({
+    ...user,
+    role: user.roleCode.toString(), // Convert BigInt to string if needed
+    user_id: user.id.toString(),
+  }));
+}
+
+export async function updateUserProfile(
+  userCode: string,
+  updateData: {
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+    gender?: string;
+    image?: string;
+    email?: string;
+    updatedBy?: string;
+  }
+) {
+  const existingUser = await prisma.user.findUnique({
+    where: { userCode: userCode },
+  });
+
+  if (!existingUser) {
+    throw new Error("User not found");
+  }
+
+  // Check if email is being updated and is not already taken
+  if (updateData.email && updateData.email !== existingUser.email) {
+    const emailExists = await prisma.user.findUnique({
+      where: { email: updateData.email },
+    });
+    if (emailExists) {
+      throw new Error("Email already exists");
+    }
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { userCode: userCode },
+    data: {
+      ...updateData,
+      updatedAt: new Date(),
+    },
+  });
+
+  // Remove password from response
+  const { password: _, ...userWithoutPassword } = updatedUser;
+
+  return userWithoutPassword;
+}

@@ -3,7 +3,10 @@ import { Request, Response } from "express";
 
 import HTTP_STATUS from "../constants/httpStatus";
 import { APPOINTMENTS_MESSAGES } from "../constants/messages";
-import { AppointmentsService, AppointmentStatus } from "../services/appointments.service";
+import {
+  AppointmentsService,
+  AppointmentStatus,
+} from "../services/appointments.service";
 
 export class AppointmentsController {
   static async getAllAppointments(req: Request, res: Response) {
@@ -50,8 +53,13 @@ export class AppointmentsController {
       // Add proper type validation for status
       const statusParam = req.query.status as string;
       let status: AppointmentStatus | undefined;
-      
-      if (statusParam && Object.values(AppointmentStatus).includes(statusParam as AppointmentStatus)) {
+
+      if (
+        statusParam &&
+        Object.values(AppointmentStatus).includes(
+          statusParam as AppointmentStatus
+        )
+      ) {
         status = statusParam as AppointmentStatus;
       }
 
@@ -80,11 +88,12 @@ export class AppointmentsController {
   static async createAppointments(req: Request, res: Response) {
     try {
       const { user_id, appointments } = req.body;
+      const createdBy = (req as any).user?.id?.toString();
 
-      // Gọi service để tạo các cuộc hẹn
       const createdAppointments = await AppointmentsService.createAppointments(
         user_id,
-        appointments
+        appointments,
+        createdBy
       );
 
       res.status(HTTP_STATUS.CREATED).json({
@@ -102,11 +111,13 @@ export class AppointmentsController {
   static async updateAppointments(req: Request, res: Response): Promise<void> {
     try {
       const appointment_id = Number(req.params.id);
-      const { status } = req.body; // Chỉ nhận `status`, không nhận `date`
+      const { status,linkMeeting } = req.body;
+      const updatedBy = (req as any).user?.id?.toString();
 
       const updatedAppointment = await AppointmentsService.updateAppointments(
         appointment_id,
-        { status } // Chỉ truyền status vào service
+        { status, linkMeeting },
+        updatedBy
       );
 
       res.status(HTTP_STATUS.OK).json({
