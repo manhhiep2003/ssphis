@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
 import { AppointmentStatus } from "../../services/appointments.service";
+import { APPOINTMENTS_MESSAGES } from "../../constants/messages";
 
 const prisma = new PrismaClient();
 
@@ -13,64 +15,82 @@ export async function validateAppointmentsRequest(
 
   if (!appointments || appointments.length === 0) {
     res.status(400).json({
-      message: "appointments array is required and cannot be empty",
+      message: APPOINTMENTS_MESSAGES.VALIDATION.EMPTY_APPOINTMENTS,
     });
     return;
   }
 
-  for (const appointment of appointments) {
-    const { time_slot_id, date } = appointment;
+  try {
+    for (const appointment of appointments) {
+      const { time_slot_id, date } = appointment;
 
-    // Kiểm tra xem tất cả các trường có tồn tại hay không
-    if (!user_id || !time_slot_id || !date) {
-      res.status(400).json({
-        message: "user_id, time_slot_id, and date are required",
-      });
-      return;
-    }
+      // Validate required fields
+      if (!user_id || !time_slot_id || !date) {
+        res.status(400).json({
+          message: APPOINTMENTS_MESSAGES.VALIDATION.REQUIRED_FIELDS,
+        });
+        return;
+      }
 
-    // Kiểm tra sự tồn tại của user_id trong bảng users
-    const userExists = await prisma.user.findUnique({
-      where: { id: user_id },
-    });
+      // Check if appointment date is in the past
+      const appointmentDate = new Date(date);
+      appointmentDate.setHours(0, 0, 0, 0);
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
 
-    if (!userExists) {
-      res.status(400).json({
-        message: "User with id ${user_id} does not exist",
-      });
-      return;
-    }
-    // Kiểm tra sự tồn tại của thời gian slot
-    const timeSlot = await prisma.time_Slots.findUnique({
-      where: { time_slot_id },
-    });
+      if (appointmentDate < now) {
+        res.status(400).json({
+          message: APPOINTMENTS_MESSAGES.VALIDATION.PAST_DATE,
+        });
+        return;
+      }
 
-    if (!timeSlot) {
-      res.status(400).json({
-        message: "Time slot with id ${time_slot_id} does not exist",
-      });
-      return;
-    }
-
-    // Kiểm tra xem người dùng đã đặt cuộc hẹn cho time_slot_id này chưa
-    // Điều kiện: Nếu trạng thái không phải là "Cancelled"
-    const existingAppointment = await prisma.appointments.findFirst({
-      where: {
-        user_id,
-        time_slot_id,
-        status: {
-          not: AppointmentStatus.Cancelled, // Kiểm tra nếu trạng thái không phải là "Cancelled"
+      // Check if time slot exists and is available
+      const timeSlot = await prisma.time_Slots.findUnique({
+        where: { time_slot_id },
+        include: {
+          appointments: {
+            where: {
+              date: {
+                gte: appointmentDate,
+                lt: new Date(appointmentDate.getTime() + 24 * 60 * 60 * 1000),
+              },
+              status: {
+                in: [AppointmentStatus.Approved, AppointmentStatus.Pending],
+              },
+            },
+          },
         },
-      },
-    });
-
-    if (existingAppointment) {
-      res.status(400).json({
-        message: `User with id ${user_id} has already booked this time slot`,
       });
-      return;
-    }
-  }
 
-  next();
+      if (!timeSlot) {
+        res.status(400).json({
+          message: APPOINTMENTS_MESSAGES.VALIDATION.TIME_SLOT_NOT_FOUND.replace(
+            "{id}",
+            time_slot_id.toString()
+          ),
+        });
+        return;
+      }
+
+      if (timeSlot.appointments.length > 0) {
+        const existingAppointment = timeSlot.appointments[0];
+        res.status(400).json({
+          message: APPOINTMENTS_MESSAGES.VALIDATION.TIME_SLOT_BOOKED
+            .replace("{startTime}", timeSlot.start_time)
+            .replace("{endTime}", timeSlot.end_time)
+            .replace("{status}", existingAppointment.status)
+            .replace("{date}", appointmentDate.toLocaleDateString("vi-VN")),
+        });
+        return;
+      }
+    }
+
+    next();
+  } catch (error:any) {
+    res.status(500).json({
+      message: APPOINTMENTS_MESSAGES.CREATE_FAILURE,
+      error: error.message,
+    });
+  }
 }

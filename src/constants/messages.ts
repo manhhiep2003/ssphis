@@ -47,17 +47,25 @@ export const TIMESLOT_MESSAGES = {
   NOT_FOUND: "Time Slot not found",
 } as const;
 export const APPOINTMENTS_MESSAGES = {
-  RETRIEVE_SUCCESS: "Time slots retrieved successfully",
-  RETRIEVE_FAILURE: "Failed to retrieve time slots",
-  CREATE_SUCCESS: "Time slot created successfully",
-  CREATE_FAILURE: "Failed to create time slot",
-  UPDATE_SUCCESS: "Time slot updated successfully",
-  UPDATE_FAILURE: "Failed to update time slot",
-  DELETE_SUCCESS: "Time slot deleted successfully",
-  DELETE_FAILURE: "Failed to delete time slot",
-  RETRIEVE_SINGLE_SUCCESS: "Time Slot retrieved successfully",
-  RETRIEVE_SINGLE_FAILURE: "Failed to retrieve Time Slot",
-  NOT_FOUND: "Time Slot not found",
+  RETRIEVE_SUCCESS: "Lấy danh sách cuộc hẹn thành công",
+  RETRIEVE_FAILURE: "Lấy danh sách cuộc hẹn thất bại",
+  CREATE_SUCCESS: "Tạo cuộc hẹn thành công",
+  CREATE_FAILURE: "Tạo cuộc hẹn thất bại",
+  UPDATE_SUCCESS: "Cập nhật cuộc hẹn thành công",
+  UPDATE_FAILURE: "Cập nhật cuộc hẹn thất bại",
+  DELETE_SUCCESS: "Xóa cuộc hẹn thành công",
+  DELETE_FAILURE: "Xóa cuộc hẹn thất bại",
+  RETRIEVE_SINGLE_SUCCESS: "Lấy thông tin cuộc hẹn thành công",
+  RETRIEVE_SINGLE_FAILURE: "Lấy thông tin cuộc hẹn thất bại",
+  NOT_FOUND: "Không tìm thấy cuộc hẹn",
+  VALIDATION: {
+    EMPTY_APPOINTMENTS: "Danh sách cuộc hẹn không được để trống",
+    REQUIRED_FIELDS: "user_id, time_slot_id và ngày hẹn là bắt buộc",
+    PAST_DATE: "Không thể đặt lịch hẹn cho ngày trong quá khứ",
+    TIME_SLOT_NOT_FOUND: "Không tìm thấy khung giờ với id {id}",
+    TIME_SLOT_BOOKED:
+      "Khung giờ từ {startTime} đến {endTime} đã có lịch hẹn {status} cho ngày {date}",
+  },
 } as const;
 
 export const MARKDOWN_MESSAGES = {

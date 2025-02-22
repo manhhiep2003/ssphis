@@ -47,12 +47,27 @@ export class AppointmentsController {
     }
   }
 
-  static async getAppointmentsByUserId(req: Request, res: Response) {
+  static async getAppointmentsByUserId(
+    req: Request,
+    res: Response
+  ): Promise<void> {
     try {
       const user_id = Number(req.query.user_id);
-      // Add proper type validation for status
+      const student_id = req.query.student_id
+        ? Number(req.query.student_id)
+        : undefined;
       const statusParam = req.query.status as string;
+      const time_slot_id = req.query.time_slot_id
+        ? Number(req.query.time_slot_id)
+        : undefined;
       let status: AppointmentStatus | undefined;
+
+      if (!user_id) {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: "user_id is required",
+        });
+        return;
+      }
 
       if (
         statusParam &&
@@ -65,12 +80,85 @@ export class AppointmentsController {
 
       const appointments = await AppointmentsService.getAppointmentsByUserId(
         user_id,
-        status
+        student_id,
+        status,
+        time_slot_id
       );
+
       if (appointments.length > 0) {
         res.status(HTTP_STATUS.OK).json({
           message: APPOINTMENTS_MESSAGES.RETRIEVE_SUCCESS,
-          data: appointments,
+          data: appointments.map((appointment) => ({
+            appointment_id: appointment.appointment_id.toString(),
+            firstNamePys: appointment.timeSlot.user.firstName,
+            lastNamePys: appointment.timeSlot.user.lastName,
+            start_time: appointment.timeSlot.start_time,
+            end_time: appointment.timeSlot.end_time,
+            status: appointment.status,
+            date: appointment.date,
+            linkMeeting: appointment.linkMeeting,
+          })),
+        });
+      } else {
+        res.status(HTTP_STATUS.NOT_FOUND).json({
+          message: APPOINTMENTS_MESSAGES.NOT_FOUND,
+        });
+      }
+    } catch (error: any) {
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: APPOINTMENTS_MESSAGES.RETRIEVE_FAILURE,
+        error: error.message,
+      });
+    }
+  }
+
+  static async getAppointmentsByUser(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const user_id = Number(req.query.user_id);
+      const statusParam = req.query.status as string;
+      const time_slot_id = req.query.time_slot_id
+        ? Number(req.query.time_slot_id)
+        : undefined;
+      let status: AppointmentStatus | undefined;
+
+      if (!user_id) {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: "user_id is required",
+        });
+        return;
+      }
+
+      if (
+        statusParam &&
+        Object.values(AppointmentStatus).includes(
+          statusParam as AppointmentStatus
+        )
+      ) {
+        status = statusParam as AppointmentStatus;
+      }
+
+      const appointments = await AppointmentsService.getAppointmentsByUser(
+        user_id,
+        status,
+        time_slot_id
+      );
+
+      if (appointments.length > 0) {
+        res.status(HTTP_STATUS.OK).json({
+          message: APPOINTMENTS_MESSAGES.RETRIEVE_SUCCESS,
+          data: appointments.map((appointment) => ({
+            appointment_id: appointment.appointment_id.toString(),
+            firstNamePys: appointment.timeSlot.user.firstName,
+            lastNamePys: appointment.timeSlot.user.lastName,
+            start_time: appointment.timeSlot.start_time,
+            end_time: appointment.timeSlot.end_time,
+            status: appointment.status,
+            date: appointment.date,
+            linkMeeting: appointment.linkMeeting,
+          })),
         });
       } else {
         res.status(HTTP_STATUS.NOT_FOUND).json({
@@ -111,7 +199,7 @@ export class AppointmentsController {
   static async updateAppointments(req: Request, res: Response): Promise<void> {
     try {
       const appointment_id = Number(req.params.id);
-      const { status,linkMeeting } = req.body;
+      const { status, linkMeeting } = req.body;
       const updatedBy = (req as any).user?.id?.toString();
 
       const updatedAppointment = await AppointmentsService.updateAppointments(
