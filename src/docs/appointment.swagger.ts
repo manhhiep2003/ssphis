@@ -66,9 +66,9 @@
 
 /**
  * @swagger
- * /api/appointmentsByUser:
+ * /api/appointmentsByPychologist:
  *   get:
- *     summary: Retrieve all appointments by user ID
+ *     summary: Retrieve appointments filtered by psychologist's time slots and optionally by student
  *     tags: [Appointments]
  *     security:
  *       - bearerAuth: []
@@ -78,25 +78,33 @@
  *         schema:
  *           type: integer
  *         required: true
- *         description: The ID of the user to retrieve appointments for
+ *         description: The psychologist's user ID to filter appointments by time slots
+ *       - in: query
+ *         name: student_id
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: Filter appointments by student's user ID
  *       - in: query
  *         name: status
  *         schema:
  *           type: string
  *           enum: [Pending, Approved, Cancelled, Completed]
  *         required: false
- *         description: The status of the appointments to retrieve
+ *         description: Filter appointments by status
+ *       - in: query
+ *         name: time_slot_id
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: Filter appointments by specific time slot ID
  *     responses:
  *       200:
  *         description: Successfully retrieved the appointments
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Appointment'
+ *       400:
+ *         description: Bad request - user_id is required
  *       404:
- *         description: Appointments not found
+ *         description: No appointments found
  *       500:
  *         description: Internal server error
  */
@@ -198,6 +206,51 @@
  *     responses:
  *       200:
  *         description: Successfully deleted the appointment
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /api/appointmentsByUser:
+ *   get:
+ *     summary: Retrieve appointments by user ID with optional filters
+ *     tags: [Appointments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: user_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The user ID to retrieve appointments for
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [Pending, Approved, Cancelled, Completed]
+ *         required: false
+ *         description: Filter appointments by status
+ *       - in: query
+ *         name: time_slot_id
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: Filter appointments by specific time slot ID
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the appointments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Appointment'
+ *       400:
+ *         description: Bad request - user_id is required
+ *       404:
+ *         description: No appointments found
  *       500:
  *         description: Internal server error
  */

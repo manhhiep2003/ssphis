@@ -3,6 +3,7 @@ import { AppointmentsController } from "../controllers/appointments.controller";
 import { verifyToken } from "../middlewares/jwtAction";
 import { validateUserIdRequest } from "../middlewares/Psychologist/validateTimeSlotRequest";
 import { validateAppointmentsRequest } from "../middlewares/Psychologist/validateAppointmentsRequest";
+import { authorizeRoles } from "../middlewares/authorization";
 
 const router = Router();
 router.get(
@@ -16,10 +17,16 @@ router.get(
   AppointmentsController.getAppointmentsById
 );
 router.get(
+  "/appointmentsByPychologist",
+  verifyToken,
+  authorizeRoles("R3","R4"),
+  AppointmentsController.getAppointmentsByUserId
+);
+router.get(
   "/appointmentsByUser",
   verifyToken,
   validateUserIdRequest,
-  AppointmentsController.getAppointmentsByUserId
+  AppointmentsController.getAppointmentsByUser
 );
 router.post(
   "/appointments-array",

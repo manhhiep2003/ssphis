@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PrismaClient } from "@prisma/client";
-import { Status } from "./timeSlot.service";
 
 const prisma = new PrismaClient();
 export enum AppointmentStatus {
@@ -46,7 +45,11 @@ export class AppointmentsService {
       where: { appointment_id },
       include: {
         user: true,
-        timeSlot: true,
+        timeSlot: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
@@ -67,6 +70,12 @@ export class AppointmentsService {
           start_time: appointment.timeSlot.start_time,
           end_time: appointment.timeSlot.end_time,
           status: appointment.timeSlot.status,
+          user: {
+            id: appointment.timeSlot.user.id.toString(),
+            firstName: appointment.timeSlot.user.firstName,
+            lastName: appointment.timeSlot.user.lastName,
+            email: appointment.timeSlot.user.email,
+          },
         },
       };
     }
@@ -75,19 +84,38 @@ export class AppointmentsService {
 
   static async getAppointmentsByUserId(
     user_id: number,
-    status?: AppointmentStatus
+    student_id?: number,
+    status?: AppointmentStatus,
+    time_slot_id?: number
   ) {
-    // Tạo điều kiện tìm kiếm với `status` nếu có
-    const whereCondition: any = { user_id };
+    // Build where condition
+    const whereCondition: any = {
+      timeSlot: {
+        user_id: user_id,
+      },
+    };
+
+    if (student_id) {
+      whereCondition.user_id = student_id;
+    }
+
     if (status) {
       whereCondition.status = status;
+    }
+
+    if (time_slot_id) {
+      whereCondition.time_slot_id = time_slot_id;
     }
 
     const appointments = await prisma.appointments.findMany({
       where: whereCondition,
       include: {
         user: true,
-        timeSlot: true,
+        timeSlot: {
+          include: {
+            user: true,
+          },
+        },
       },
       orderBy: {
         date: "desc",
@@ -110,6 +138,70 @@ export class AppointmentsService {
         start_time: appointment.timeSlot.start_time,
         end_time: appointment.timeSlot.end_time,
         status: appointment.timeSlot.status,
+        user: {
+          id: appointment.timeSlot.user.id.toString(),
+          firstName: appointment.timeSlot.user.firstName,
+          lastName: appointment.timeSlot.user.lastName,
+          email: appointment.timeSlot.user.email,
+        },
+      },
+    }));
+  }
+
+  static async getAppointmentsByUser(
+    user_id: number,
+    status?: AppointmentStatus,
+    time_slot_id?: number
+  ) {
+    const whereCondition: any = {
+      user_id: user_id,
+    };
+
+    if (status) {
+      whereCondition.status = status;
+    }
+
+    if (time_slot_id) {
+      whereCondition.time_slot_id = time_slot_id;
+    }
+
+    const appointments = await prisma.appointments.findMany({
+      where: whereCondition,
+      include: {
+        user: true,
+        timeSlot: {
+          include: {
+            user: true,
+          },
+        },
+      },
+      orderBy: {
+        date: "desc",
+      },
+    });
+
+    return appointments.map((appointment) => ({
+      ...appointment,
+      appointment_id: appointment.appointment_id.toString(),
+      user_id: appointment.user_id.toString(),
+      time_slot_id: appointment.time_slot_id.toString(),
+      user: {
+        id: appointment.user.id.toString(),
+        firstName: appointment.user.firstName,
+        lastName: appointment.user.lastName,
+        email: appointment.user.email,
+      },
+      timeSlot: {
+        time_slot_id: appointment.timeSlot.time_slot_id.toString(),
+        start_time: appointment.timeSlot.start_time,
+        end_time: appointment.timeSlot.end_time,
+        status: appointment.timeSlot.status,
+        user: {
+          id: appointment.timeSlot.user.id.toString(),
+          firstName: appointment.timeSlot.user.firstName,
+          lastName: appointment.timeSlot.user.lastName,
+          email: appointment.timeSlot.user.email,
+        },
       },
     }));
   }
@@ -123,19 +215,15 @@ export class AppointmentsService {
 
     for (const appointment of appointments) {
       const { time_slot_id, date } = appointment;
-      // Check if time slot exists
-      const timeSlot = await prisma.time_Slots.findUnique({
-        where: { time_slot_id },
-      });
-
       const status = AppointmentStatus.Pending;
+
       const newAppointment = await prisma.appointments.create({
         data: {
           user_id,
           time_slot_id,
           date: new Date(date),
           status,
-          createdBy, // Add createdBy from token
+          createdBy,
         },
       });
 
@@ -144,13 +232,6 @@ export class AppointmentsService {
         appointment_id: newAppointment.appointment_id.toString(),
         user_id: newAppointment.user_id.toString(),
         time_slot_id: newAppointment.time_slot_id.toString(),
-        timeSlot: {
-          time_slot_id: timeSlot?.time_slot_id.toString(),
-          start_time: timeSlot?.start_time,
-          end_time: timeSlot?.end_time,
-          status: timeSlot?.status,
-          psychologist_id: timeSlot?.user_id.toString(),
-        },
       });
     }
 
@@ -171,30 +252,6 @@ export class AppointmentsService {
         updatedAt: new Date(),
       },
     });
-
-    if (data.status === AppointmentStatus.Approved) {
-      await prisma.time_Slots.update({
-        where: {
-          time_slot_id: updatedAppointment.time_slot_id,
-        },
-        data: {
-          status: Status.Booked,
-          updatedBy, // Add updatedBy for time slot
-          updatedAt: new Date(),
-        },
-      });
-    } else if (data.status === AppointmentStatus.Completed) {
-      await prisma.time_Slots.update({
-        where: {
-          time_slot_id: updatedAppointment.time_slot_id,
-        },
-        data: {
-          status: Status.Available,
-          updatedBy, // Add updatedBy for time slot
-          updatedAt: new Date(),
-        },
-      });
-    }
 
     return {
       ...updatedAppointment,
