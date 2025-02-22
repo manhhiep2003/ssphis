@@ -125,6 +125,7 @@ export async function updateUserProfile(
     gender?: string;
     image?: string;
     email?: string;
+    description?: string;
     updatedBy?: string;
   }
 ) {
@@ -158,4 +159,35 @@ export async function updateUserProfile(
   const { password: _, ...userWithoutPassword } = updatedUser;
 
   return userWithoutPassword;
+}
+
+export async function getUserByIdService(id: number) {
+  const user = await prisma.user.findUnique({
+    where: { id: BigInt(id) },
+    include: {
+      role: true,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  // const { password: _, ...userWithoutPassword } = user;
+
+  return {
+    id: user.id.toString(),
+    username: user.username,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    userCode: user.userCode,
+    image: user.image,
+    description: user.description,
+    status: user.status,
+    email: user.email,
+    phone: user.phone,
+    gender: user.gender,
+    role: user.roleCode,
+
+  };
 }

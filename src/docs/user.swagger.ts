@@ -257,6 +257,9 @@
  *                 type: string
  *                 format: email
  *                 example: "john.doe@example.com"
+ *               description:
+ *                 type: string
+ *                 example: "#MarkDown description"
  *               updatedBy:
  *                 type: string
  *                 example: "admin"
@@ -300,6 +303,78 @@
  *                       example: "https://example.com/profile.jpg"
  *       400:
  *         description: Bad request - Email already exists
+ *       401:
+ *         description: Unauthorized - Invalid or missing token
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /api/public/users/{id}:
+ *   get:
+ *     summary: Get user by ID
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: User ID
+ *         example: 1
+ *     responses:
+ *       200:
+ *         description: User retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User retrieved successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "1"
+ *                     username:
+ *                       type: string
+ *                       example: "johndoe"
+ *                     email:
+ *                       type: string
+ *                       example: "johndoe@example.com"
+ *                     userCode:
+ *                       type: string
+ *                       example: "1234567890"
+ *                     firstName:
+ *                       type: string
+ *                       example: "John"
+ *                     lastName:
+ *                       type: string
+ *                       example: "Doe"
+ *                     phone:
+ *                       type: string
+ *                       example: "1234567890"
+ *                     gender:
+ *                       type: string
+ *                       example: "male"
+ *                     role:
+ *                       type: object
+ *                       properties:
+ *                         roleCode:
+ *                           type: string
+ *                           example: "ADM"
+ *                         roleName:
+ *                           type: string
+ *                           example: "Admin"
+ *       400:
+ *         description: Invalid user ID format
  *       401:
  *         description: Unauthorized - Invalid or missing token
  *       404:

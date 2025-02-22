@@ -90,8 +90,7 @@ export class AppointmentsController {
           message: APPOINTMENTS_MESSAGES.RETRIEVE_SUCCESS,
           data: appointments.map((appointment) => ({
             appointment_id: appointment.appointment_id.toString(),
-            firstNamePys: appointment.timeSlot.user.firstName,
-            lastNamePys: appointment.timeSlot.user.lastName,
+            fullName: appointment.user.firstName + " " + appointment.user.lastName,
             start_time: appointment.timeSlot.start_time,
             end_time: appointment.timeSlot.end_time,
             status: appointment.status,

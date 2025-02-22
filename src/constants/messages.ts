@@ -12,6 +12,9 @@ export const USERS_MESSAGES = {
   NO_USERS_FOUND: "No users found for this role",
   UPDATE_SUCCESS: "User profile updated successfully",
   UPDATE_FAILURE: "Failed to update user profile",
+  RETRIEVE_SINGLE_SUCCESS: "User retrieved successfully",
+  RETRIEVE_SINGLE_FAILURE: "Failed to retrieve user",
+  NOT_FOUND: "User not found",
 } as const;
 
 export const ROLES_MESSAGES = {

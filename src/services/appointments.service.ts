@@ -214,7 +214,7 @@ export class AppointmentsService {
     const createdAppointments = [];
 
     for (const appointment of appointments) {
-      const { time_slot_id, date } = appointment;
+      const { time_slot_id, date, notes } = appointment;
       const status = AppointmentStatus.Pending;
 
       const newAppointment = await prisma.appointments.create({
@@ -222,6 +222,7 @@ export class AppointmentsService {
           user_id,
           time_slot_id,
           date: new Date(date),
+          notes,
           status,
           createdBy,
         },
