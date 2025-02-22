@@ -133,6 +133,8 @@
  *                   properties:
  *                     time_slot_id:
  *                       type: integer
+ *                     notes:
+ *                       type: string
  *                     date:
  *                       type: string
  *                       format: date-time

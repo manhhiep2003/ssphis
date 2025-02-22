@@ -50,17 +50,25 @@ export class TimeSlotService {
       },
     });
 
-    return timeSlots.map((slot) => ({
-      ...slot,
-      time_slot_id: slot.time_slot_id.toString(), // Convert BigInt to string if needed
-      user_id: slot.user_id.toString(),
-      user: {
-        id: slot.user.id.toString(),
-        firstName: slot.user.firstName,
-        lastName: slot.user.lastName,
-        email: slot.user.email,
-      },
-    }));
+    // Helper function to convert time string to minutes
+    const timeToMinutes = (timeStr: string): number => {
+      const [hours, minutes] = timeStr.split(":").map(Number);
+      return hours * 60 + minutes;
+    };
+
+    return timeSlots
+      .sort((a, b) => timeToMinutes(a.start_time) - timeToMinutes(b.start_time))
+      .map((slot) => ({
+        ...slot,
+        time_slot_id: slot.time_slot_id.toString(),
+        user_id: slot.user_id.toString(),
+        user: {
+          id: slot.user.id.toString(),
+          firstName: slot.user.firstName,
+          lastName: slot.user.lastName,
+          email: slot.user.email,
+        },
+      }));
   }
 
   static async createTimeSlots(
@@ -137,7 +145,7 @@ export class TimeSlotService {
   //       const endTimeInMinutes = parseInt(endHours) * 60 + parseInt(endMinutes);
   //       // console.log(startTimeInMinutes, endTimeInMinutes);
   //       // console.log(currentTime);
-        
+
   //       let isCurrentlyActive;
   //       if (endTimeInMinutes < startTimeInMinutes) {
   //         // Handle overnight slots (e.g., 23:00 to 01:00)

@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import {
   createUser,
+  getUserByIdService,
   getUsersByRoleService,
   getUserService,
   loginUser,
@@ -177,7 +178,7 @@ export async function updateUserProfileHandler(
 ): Promise<void> {
   try {
     const { userCode } = req.params;
-    const { firstName, lastName, phone, gender, image, email, updatedBy } =
+    const { firstName, lastName, phone, gender, image, email,description, updatedBy } =
       req.body;
 
     const updatedUser = await updateUserProfile(userCode, {
@@ -187,6 +188,7 @@ export async function updateUserProfileHandler(
       gender,
       image,
       email,
+      description,
       updatedBy,
     });
 
@@ -208,6 +210,41 @@ export async function updateUserProfileHandler(
     } else {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
         message: USERS_MESSAGES.UPDATE_FAILURE,
+        error: error.message,
+      });
+    }
+  }
+}
+
+export async function getUserByIdHandler(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const id = Number(req.params.id);
+
+    if (isNaN(id)) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: "Invalid user ID format",
+      });
+      return;
+    }
+
+    const user = await getUserByIdService(id);
+
+    res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.RETRIEVE_SINGLE_SUCCESS,
+      data: user,
+    });
+  } catch (error: any) {
+    console.error(error);
+    if (error.message === "User not found") {
+      res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: USERS_MESSAGES.NOT_FOUND,
+      });
+    } else {
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: USERS_MESSAGES.RETRIEVE_SINGLE_FAILURE,
         error: error.message,
       });
     }
