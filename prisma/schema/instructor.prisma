@@ -1,0 +1,18 @@
+model Instructor {
+    instructorId          BigInt  @id @default(autoincrement()) @map("instructor_id")
+    instructorName        String? @map("instructor_name") @db.VarChar(50)
+    instructorImage       String? @map("instructor_image") @db.Text()
+    instructorTitle       String? @map("instructor_title") @db.VarChar(50)
+    instructorExperience  String? @map("instructor_experience") @db.VarChar(100)
+    instructorDescription String? @map("instructor_description") @db.VarChar(200)
+
+    programId BigInt
+    program   Program @relation(fields: [programId], references: [programId])
+
+    createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+    createdBy String?   @map("created_by") @db.VarChar(36)
+    updatedAt DateTime? @updatedAt @map("modified_at") @db.Timestamptz(3)
+    updatedBy String?   @map("modified_by") @db.VarChar(36)
+
+    @@map("instructor")
+}

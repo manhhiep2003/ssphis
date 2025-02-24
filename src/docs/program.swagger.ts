@@ -112,6 +112,14 @@
  *                 format: date-time
  *                 description: The end date and time of the program
  *                 example: "2023-12-31T17:00:00Z"
+ *               time:
+ *                 type: string
+ *                 description: Time
+ *                 example: "19:00 - 21:00"
+ *               frequency:
+ *                 type: string
+ *                 description: Frequency
+ *                 example: "Chủ nhật hàng tuần"
  *               targetAudience:
  *                 type: string
  *                 description: The target audience for the program
@@ -240,6 +248,14 @@
  *                 format: date-time
  *                 description: The updated end date and time of the program
  *                 example: "2023-12-31T17:00:00Z"
+ *               time:
+ *                 type: string
+ *                 description: Time
+ *                 example: "19:00 - 21:00"
+ *               frequency:
+ *                 type: string
+ *                 description: Frequency
+ *                 example: "Chủ nhật hàng tuần"
  *               targetAudience:
  *                 type: string
  *                 description: The updated target audience for the program

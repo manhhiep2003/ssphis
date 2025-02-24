@@ -4,6 +4,8 @@ model Program {
     description    String?  @map("description") @db.Text()
     startDate      DateTime @map("start_date") @db.Timestamptz(3)
     endDate        DateTime @map("end_date") @db.Timestamptz(3)
+    time           String?  @map("time") @db.VarChar(20)
+    frequency      String?  @map("frequency") @db.VarChar(30)
     targetAudience String?  @map("target_audience") @db.Text()
     location       String?  @map("location") @db.VarChar(255)
     organizerEmail String?  @map("organizer_email") @db.VarChar(100)
@@ -11,13 +13,16 @@ model Program {
     imageUrl       String?  @map("image_url") @db.Text()
     price          Decimal? @map("price") @db.Decimal(18, 2)
     rating         Int?     @map("rating") @db.Integer()
-    categoryId     BigInt   @map("category_id")
-    category       Category @relation(fields: [categoryId], references: [categoryId])
+    ratingCount    Int?     @map("rating_count") @db.Integer()
 
-    createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
-    createdBy String?   @map("created_by") @db.VarChar(36)
-    updatedAt DateTime? @updatedAt @map("modified_at") @db.Timestamptz(3)
-    updatedBy String?   @map("modified_by") @db.VarChar(36)
+    categoryId BigInt   @map("category_id")
+    category   Category @relation(fields: [categoryId], references: [categoryId])
+    instructor Instructor[]
 
+    createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+    createdBy  String?      @map("created_by") @db.VarChar(36)
+    updatedAt  DateTime?    @updatedAt @map("modified_at") @db.Timestamptz(3)
+    updatedBy  String?      @map("modified_by") @db.VarChar(36)
+    
     @@map("program")
 }

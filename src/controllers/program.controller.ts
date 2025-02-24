@@ -13,6 +13,8 @@ export class ProgramController {
         categoryId,
         startDate,
         endDate,
+        time,
+        frequency,
         targetAudience,
         location,
         organizerEmail,
@@ -26,6 +28,8 @@ export class ProgramController {
         description,
         startDate,
         endDate,
+        time,
+        frequency,
         targetAudience,
         location,
         organizerEmail,
@@ -95,16 +99,46 @@ export class ProgramController {
   static async updateProgram(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { title, description, categoryId } = req.body;
-      const updatedProgram = await ProgramService.updateProgram(Number(id), {
+      const {
         title,
         description,
-        categoryId: categoryId ? BigInt(categoryId) : undefined,
+        categoryId,
+        startDate,
+        endDate,
+        time,
+        frequency,
+        targetAudience,
+        location,
+        organizerEmail,
+        contactPhone,
+        imageUrl,
+        price,
+        rating,
+      } = req.body;
+      const updatedProgram = await ProgramService.updateProgram(Number(id), {
+       title,
+        description,
+        categoryId,
+        startDate,
+        endDate,
+        time,
+        frequency,
+        targetAudience,
+        location,
+        organizerEmail,
+        contactPhone,
+        imageUrl,
+        price,
+        rating,
       });
-
+      const sanitizedProgram = {
+        ...updatedProgram,
+        programId: updatedProgram.programId.toString(),
+        categoryId: updatedProgram.categoryId.toString(),
+      };
       res.status(HTTP_STATUS.OK).json({
         message: PROGRAM_MESSAGES.UPDATE_SUCCESS,
-        data: updatedProgram,
+        data: sanitizedProgram,
       });
     } catch (error: any) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
