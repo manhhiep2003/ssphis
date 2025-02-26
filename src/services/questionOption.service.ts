@@ -5,11 +5,13 @@ export class QuestionOptionService {
   static async createQuestionOption(data: {
     optionText: string;
     questionId: bigint;
+    value: number;
   }) {
     return await prisma.questionOption.create({
       data: {
         optionText: data.optionText,
         questionId: data.questionId,
+        value: data.value,
       },
     });
   }
@@ -40,7 +42,7 @@ export class QuestionOptionService {
 
   static async updateQuestionOption(
     optionId: number,
-    data: { optionText?: string; questionId?: bigint }
+    data: { optionText?: string; questionId?: bigint; value: number }
   ) {
     return await prisma.questionOption.update({
       where: { optionId },

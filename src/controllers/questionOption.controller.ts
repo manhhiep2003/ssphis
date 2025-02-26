@@ -7,11 +7,12 @@ import { QuestionOptionService } from "../services/questionOption.service";
 export class QuestionOptionController {
   static async createQuestion(req: Request, res: Response) {
     try {
-      const { optionText, questionId } = req.body;
+      const { optionText, questionId, value } = req.body;
       const newQuestionOption =
         await QuestionOptionService.createQuestionOption({
           optionText,
           questionId: BigInt(questionId),
+          value,
         });
 
       const sanitizedQuestionOption = {
@@ -73,12 +74,13 @@ export class QuestionOptionController {
   static async updateQuestionOption(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { optionText, questionId } = req.body;
+      const { optionText, questionId, value } = req.body;
       const updatedSurvey = await QuestionOptionService.updateQuestionOption(
         Number(id),
         {
           optionText,
           questionId: questionId ? BigInt(questionId) : undefined,
+          value,
         }
       );
 

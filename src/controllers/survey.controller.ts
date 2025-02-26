@@ -1,32 +1,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import HTTP_STATUS from "../constants/httpStatus";
-import { PROGRAM_MESSAGES } from "../constants/messages";
+import { SURVEY_MESSAGES } from "../constants/messages";
 import { SurveyService } from "../services/survey.service";
 import { Request, Response } from "express";
 
 export class SurveyController {
   static async createSurvey(req: Request, res: Response) {
     try {
-      const { title, description, categoryId } = req.body;
+      const { title, description, categoryId, questions } = req.body;
       const newSurvey = await SurveyService.createSurvey({
         title,
         description,
         categoryId: BigInt(categoryId),
+        questions,
       });
 
-      const sanitizedSurvey = {
-        ...newSurvey,
-        id: newSurvey.surveyId.toString(),
-        categoryId: newSurvey.categoryId.toString(),
-      };
+      // const sanitizedSurvey = {
+      //   ...newSurvey,
+      //   id: newSurvey.surveyId.toString(),
+      //   categoryId: newSurvey.categoryId.toString(),
+      // };
 
       res.status(HTTP_STATUS.CREATED).json({
-        message: PROGRAM_MESSAGES.CREATE_SUCCESS,
-        data: sanitizedSurvey,
+        message: SURVEY_MESSAGES.CREATE_SUCCESS,
+        data: newSurvey,
       });
     } catch (error: any) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
-        message: PROGRAM_MESSAGES.CREATE_FAILURE,
+        message: SURVEY_MESSAGES.CREATE_FAILURE,
         error: error.message,
       });
     }
@@ -37,17 +38,17 @@ export class SurveyController {
       const survey = await SurveyService.getSurveyById(Number(req.params.id));
       if (survey) {
         res.status(HTTP_STATUS.OK).json({
-          message: PROGRAM_MESSAGES.RETRIEVE_SINGLE_SUCCESS,
+          message: SURVEY_MESSAGES.RETRIEVE_SINGLE_SUCCESS,
           data: survey,
         });
       } else {
         res
           .status(HTTP_STATUS.NOT_FOUND)
-          .json({ message: PROGRAM_MESSAGES.NOT_FOUND });
+          .json({ message: SURVEY_MESSAGES.NOT_FOUND });
       }
     } catch (error: any) {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        message: PROGRAM_MESSAGES.RETRIEVE_SINGLE_FAILURE,
+        message: SURVEY_MESSAGES.RETRIEVE_SINGLE_FAILURE,
         error: error.message,
       });
     }
@@ -57,12 +58,12 @@ export class SurveyController {
     try {
       const surveys = await SurveyService.getAllSurveys();
       res.status(HTTP_STATUS.OK).json({
-        message: PROGRAM_MESSAGES.RETRIEVE_SUCCESS,
+        message: SURVEY_MESSAGES.RETRIEVE_SUCCESS,
         data: surveys,
       });
     } catch (error: any) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
-        message: PROGRAM_MESSAGES.RETRIEVE_FAILURE,
+        message: SURVEY_MESSAGES.RETRIEVE_FAILURE,
         error: error.message,
       });
     }
@@ -79,12 +80,12 @@ export class SurveyController {
       });
 
       res.status(HTTP_STATUS.OK).json({
-        message: PROGRAM_MESSAGES.UPDATE_SUCCESS,
+        message: SURVEY_MESSAGES.UPDATE_SUCCESS,
         data: updatedSurvey,
       });
     } catch (error: any) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
-        message: PROGRAM_MESSAGES.UPDATE_FAILURE,
+        message: SURVEY_MESSAGES.UPDATE_FAILURE,
         error: error.message,
       });
     }
@@ -96,11 +97,11 @@ export class SurveyController {
       await SurveyService.deleteSurvey(Number(id));
 
       res.status(HTTP_STATUS.OK).json({
-        message: PROGRAM_MESSAGES.DELETE_SUCCESS,
+        message: SURVEY_MESSAGES.DELETE_SUCCESS,
       });
     } catch (error: any) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
-        message: PROGRAM_MESSAGES.DELETE_FAILURE,
+        message: SURVEY_MESSAGES.DELETE_FAILURE,
         error: error.message,
       });
     }

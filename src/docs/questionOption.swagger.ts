@@ -18,6 +18,10 @@
  *           type: string
  *           description: Option text
  *           example: "Có"
+ *         value:
+ *           type: integer
+ *           description: The value of the option
+ *           example: 1
  *         questionId:
  *           type: integer
  *           description: The question ID associated with the option
@@ -49,6 +53,10 @@
  *                 type: string
  *                 description: Option text
  *                 example: "Có"
+ *               value:
+ *                 type: integer
+ *                 description: The value of the question option ID
+ *                 example: 1
  *               questionId:
  *                 type: integer
  *                 description: The question ID
@@ -132,6 +140,9 @@
  *               optionText:
  *                 type: string
  *                 example: "Có"
+ *               value:
+ *                 type: integer
+ *                 example: 1
  *               questionId:
  *                 type: integer
  *                 example: 1

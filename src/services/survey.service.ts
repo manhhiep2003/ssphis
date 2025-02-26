@@ -6,13 +6,49 @@ export class SurveyService {
     title: string;
     description?: string;
     categoryId: bigint;
+    createdBy?: string;
+    questions?: {
+      questionText: string;
+      createdBy?: string;
+      options: {
+        value: number;
+        optionText: string;
+        createdBy?: string;
+      }[];
+    }[];
   }) {
-    return await prisma.survey.create({
-      data: {
-        title: data.title,
-        description: data.description,
-        categoryId: data.categoryId,
-      },
+    return await prisma.$transaction(async (tx) => {
+      const survey = await tx.survey.create({
+        data: {
+          title: data.title,
+          description: data.description,
+          categoryId: data.categoryId,
+          Question: {
+            create: data.questions?.map((q) => ({
+              questionText: q.questionText,
+              QuestionOption: {
+                create: q.options.map((opt) => ({
+                  value: opt.value,
+                  optionText: opt.optionText,
+                })),
+              },
+            })),
+          },
+        },
+        include: {
+          Question: {
+            include: {
+              QuestionOption: true,
+            },
+          },
+        },
+      });
+
+      return JSON.parse(
+        JSON.stringify(survey, (_, value) =>
+          typeof value === "bigint" ? value.toString() : value
+        )
+      );
     });
   }
 
