@@ -7,6 +7,7 @@ import {
   getUserService,
   loginUser,
   updateUserProfile,
+  updateUserStatusById,
 } from "../services/user.service";
 import HTTP_STATUS from "../constants/httpStatus";
 import { USERS_MESSAGES } from "../constants/messages";
@@ -245,6 +246,49 @@ export async function getUserByIdHandler(
     } else {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
         message: USERS_MESSAGES.RETRIEVE_SINGLE_FAILURE,
+        error: error.message,
+      });
+    }
+  }
+}
+
+export async function updateUserStatusHandler(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const id = Number(req.params.id);
+    const { status } = req.body;
+
+    if (isNaN(id)) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: "Invalid user ID format",
+      });
+      return;
+    }
+
+    if (typeof status !== "boolean") {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: "Status must be a boolean value",
+      });
+      return;
+    }
+
+    const result = await updateUserStatusById(id, status);
+
+    res.status(HTTP_STATUS.OK).json({
+      message: USERS_MESSAGES.UPDATE_SUCCESS,
+      data: result,
+    });
+  } catch (error: any) {
+    console.error(error);
+    if (error.message === "User not found") {
+      res.status(HTTP_STATUS.NOT_FOUND).json({
+        message: USERS_MESSAGES.NOT_FOUND,
+      });
+    } else {
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: USERS_MESSAGES.UPDATE_FAILURE,
         error: error.message,
       });
     }

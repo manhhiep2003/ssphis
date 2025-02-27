@@ -6,14 +6,11 @@ export class SurveyService {
     title: string;
     description?: string;
     categoryId: bigint;
-    createdBy?: string;
     questions?: {
       questionText: string;
-      createdBy?: string;
       options: {
         value: number;
         optionText: string;
-        createdBy?: string;
       }[];
     }[];
   }) {

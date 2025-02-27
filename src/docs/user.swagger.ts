@@ -385,6 +385,44 @@
 
 /**
  * @swagger
+ * /api/users/{id}:
+ *   put:
+ *     summary: Update user status (active/inactive)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: User ID to update status for
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - status
+ *             properties:
+ *               status:
+ *                 type: boolean
+ *                 example: true
+ *     responses:
+ *       200:
+ *         description: User status updated successfully
+ *       400:
+ *         description: Invalid user ID format or invalid status value
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
  * components:
  *   securitySchemes:
  *     bearerAuth:

@@ -188,6 +188,30 @@ export async function getUserByIdService(id: number) {
     phone: user.phone,
     gender: user.gender,
     role: user.roleCode,
-
   };
 }
+
+export async function updateUserStatusById(id: number, status: boolean) {
+  const existingUser = await prisma.user.findUnique({
+    where: { id: BigInt(id) },
+  });
+
+  if (!existingUser) {
+    throw new Error("User not found");
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { id: BigInt(id) },
+    data: {
+      status,
+      updatedAt: new Date(),
+    },
+  });
+
+  return {
+    id: updatedUser.id.toString(),
+    status: updatedUser.status,
+  };
+}
+
+
