@@ -1,7 +1,7 @@
 import express from "express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import swaggerOptions from "./config/swaggerOptions";
+import swaggerOptions from "./configs/swaggerOptions.config";
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 

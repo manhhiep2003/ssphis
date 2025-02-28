@@ -11,6 +11,7 @@ import programRoutes from "./routes/program.routes";
 import questionRoutes from "./routes/question.routes";
 import questionOptionRoutes from "./routes/questionOption.routes";
 import surveyResultRoutes from "./routes/surveyResult.routes";
+import vnpayRoutes from "./routes/payment.routes";
 import swagger from "./swagger";
 import cors from "cors";
 // import { CronService } from "./services/cron.service";
@@ -32,6 +33,7 @@ app.use("/api", programRoutes);
 app.use("/api", questionRoutes);
 app.use("/api", questionOptionRoutes);
 app.use("/api", surveyResultRoutes);
+app.use("/api", vnpayRoutes);
 // CronService.initCronJobs();
 swagger(app);
 
