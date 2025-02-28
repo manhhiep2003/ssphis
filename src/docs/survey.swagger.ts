@@ -162,7 +162,7 @@
  * @swagger
  * /api/survey/{id}:
  *   get:
- *     summary: Get a survey by ID
+ *     summary: Get all questions and options of a survey
  *     tags:
  *       - Survey
  *     parameters:
@@ -176,11 +176,40 @@
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Survey details
+ *         description: Successfully retrieved questions and options
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Survey questions retrieved successfully"
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       questionText:
+ *                         type: string
+ *                         example: "Bạn có cảm thấy lo lắng trong tuần qua không?"
+ *                       options:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             value:
+ *                               type: integer
+ *                               example: 1
+ *                             optionText:
+ *                               type: string
+ *                               example: "Có, thường xuyên"
  *       401:
  *         description: Unauthorized
  *       404:
  *         description: Survey not found
+ *       500:
+ *         description: Internal server error
  */
 
 /**

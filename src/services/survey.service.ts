@@ -49,18 +49,23 @@ export class SurveyService {
     });
   }
 
-  static async getSurveyById(surveyId: number) {
-    const survey = await prisma.survey.findUnique({
+  static async getSurveyQuestions(surveyId: bigint) {
+    const questions = await prisma.question.findMany({
       where: { surveyId },
+      include: {
+        QuestionOption: true,
+      },
     });
-    if (survey) {
-      return {
-        ...survey,
-        surveyId: survey.surveyId.toString(),
-        categoryId: survey.categoryId.toString(),
-      };
-    }
-    return null;
+
+    return questions.map((question) => ({
+      questionId: question.questionId.toString(),
+      questionText: question.questionText,
+      options: question.QuestionOption.map((option) => ({
+        optionId: option.optionId.toString(),
+        value: option.value,
+        optionText: option.optionText,
+      })),
+    }));
   }
 
   static async getAllSurveys() {

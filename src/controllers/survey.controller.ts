@@ -33,13 +33,15 @@ export class SurveyController {
     }
   }
 
-  static async getSurveyById(req: Request, res: Response) {
+  static async getSurveyQuestions(req: Request, res: Response) {
     try {
-      const survey = await SurveyService.getSurveyById(Number(req.params.id));
-      if (survey) {
+      const { id } = req.params;
+      const questions = await SurveyService.getSurveyQuestions(BigInt(id));
+
+      if (questions.length > 0) {
         res.status(HTTP_STATUS.OK).json({
-          message: SURVEY_MESSAGES.RETRIEVE_SINGLE_SUCCESS,
-          data: survey,
+          message: SURVEY_MESSAGES.RETRIEVE_SUCCESS,
+          data: questions,
         });
       } else {
         res
@@ -48,7 +50,7 @@ export class SurveyController {
       }
     } catch (error: any) {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        message: SURVEY_MESSAGES.RETRIEVE_SINGLE_FAILURE,
+        message: SURVEY_MESSAGES.RETRIEVE_FAILURE,
         error: error.message,
       });
     }
