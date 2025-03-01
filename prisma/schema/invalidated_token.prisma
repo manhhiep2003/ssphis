@@ -1,0 +1,8 @@
+model InvalidatedToken {
+    id        BigInt   @id @default(autoincrement())
+    token     String   @unique
+    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+    expiresAt DateTime
+
+    @@map("invalidated_token")
+}

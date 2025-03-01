@@ -36,6 +36,7 @@ export const JWT_MESSAGES = {
   INVALID_TOKEN_FORMAT: "Invalid token format",
   FAILED_TO_AUTHENTICATE_TOKEN: "Failed to authenticate token",
 } as const;
+
 export const TIMESLOT_MESSAGES = {
   RETRIEVE_SUCCESS: "Time slots retrieved successfully",
   RETRIEVE_FAILURE: "Failed to retrieve time slots",
@@ -49,6 +50,7 @@ export const TIMESLOT_MESSAGES = {
   RETRIEVE_SINGLE_FAILURE: "Failed to retrieve Time Slot",
   NOT_FOUND: "Time Slot not found",
 } as const;
+
 export const APPOINTMENTS_MESSAGES = {
   RETRIEVE_SUCCESS: "Lấy danh sách cuộc hẹn thành công",
   RETRIEVE_FAILURE: "Lấy danh sách cuộc hẹn thất bại",

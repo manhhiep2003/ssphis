@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import authRoute from "./routes/auth.route";
 import userRoutes from "./routes/user.routes";
 import roleRoutes from "./routes/role.routes";
 import timeSlotRoutes from "./routes/timeSlot.routes";
@@ -22,6 +23,7 @@ const PORT = process.env.PORT || 3000;
 // Use CORS middleware with options
 app.use(cors());
 app.use(express.json());
+app.use("/api", authRoute);
 app.use("/api", userRoutes);
 app.use("/api", roleRoutes);
 app.use("/api", timeSlotRoutes);

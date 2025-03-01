@@ -1,4 +1,4 @@
-import { buildVnpayUrl } from "../utils/vnpay";
+import { buildVnpayUrl } from "../utils/vnpay.util";
 
 export const createPaymentUrl = (
   orderId: string,

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { createPaymentUrl } from "../services/payment.service";
-import { verifyVnpayReturn } from "../utils/vnpay";
+import { verifyVnpayReturn } from "../utils/vnpay.util";
 
 export const createPayment = (req: Request, res: Response): void => {
   const { orderId, amount, description } = req.body;

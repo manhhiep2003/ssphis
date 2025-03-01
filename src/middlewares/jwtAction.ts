@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { Request, Response, NextFunction } from "express";
 import HTTP_STATUS from "../constants/httpStatus";
 import { JWT_MESSAGES } from "../constants/messages";
+import { isTokenInvalidated } from "../services/tokenService";
 
 dotenv.config();
 
@@ -29,41 +30,38 @@ interface CustomRequest extends Request {
   user?: any;
 }
 
-const verifyToken = (
+const verifyToken = async (
   req: CustomRequest,
   res: Response,
   next: NextFunction
-): void => {
-  const authHeader = req.headers["authorization"] as string | undefined;
-
+): Promise<void> => {
+  const authHeader = req.headers["authorization"];
   if (!authHeader) {
-    res
-      .status(HTTP_STATUS.UNAUTHORIZED)
-      .json({ message: JWT_MESSAGES.NO_TOKEN_PROVIDED });
-    return;
+    res.status(HTTP_STATUS.UNAUTHORIZED).json({
+      message: JWT_MESSAGES.NO_TOKEN_PROVIDED,
+    });
+    return; // Stop further execution
   }
 
-  const token = authHeader.split(" ")[1]; // Assuming the token is in the format "Bearer <token>"
+  const token = authHeader.split(" ")[1];
 
-  if (!token) {
-    res
-      .status(HTTP_STATUS.UNAUTHORIZED)
-      .json({ message: JWT_MESSAGES.INVALID_TOKEN_FORMAT });
-    return;
+  if (await isTokenInvalidated(token)) {
+    res.status(HTTP_STATUS.UNAUTHORIZED).json({
+      message: "Token đã bị vô hiệu hóa, vui lòng đăng nhập lại",
+    });
+    return; // Stop further execution
   }
 
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
-      res
-        .status(HTTP_STATUS.UNAUTHORIZED)
-        .json({ message: JWT_MESSAGES.FAILED_TO_AUTHENTICATE_TOKEN });
-      return;
+      res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        message: JWT_MESSAGES.FAILED_TO_AUTHENTICATE_TOKEN,
+      });
+      return; // Stop further execution
     }
 
-    // Optionally, you can attach the decoded token to the request object
-    req.user = decoded;
-
-    next();
+    req.user = decoded; // Attach the decoded user to the request object
+    next(); // Pass control to the next middleware or route handler
   });
 };
 
