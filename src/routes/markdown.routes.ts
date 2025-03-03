@@ -8,13 +8,13 @@ const router = Router();
 router.get("/markdowns", verifyToken, MarkdownController.getAllMarkdowns);
 router.get("/markdowns/:id", verifyToken, MarkdownController.getMarkdownById);
 router.get("/markdowns/user/:user_id", verifyToken, MarkdownController.getMarkdownsByUserId);
-router.post(
-  "/markdowns",
+router.post("/markdowns", verifyToken, validateMarkdownRequest, MarkdownController.createMarkdown);
+router.put(
+  "/markdowns/:id",
   verifyToken,
   validateMarkdownRequest,
-  MarkdownController.createMarkdown
+  MarkdownController.updateMarkdown,
 );
-router.put("/markdowns/:id", verifyToken,validateMarkdownRequest, MarkdownController.updateMarkdown);
 router.delete("/markdowns/:id", verifyToken, MarkdownController.deleteMarkdown);
 
 export default router;

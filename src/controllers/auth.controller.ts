@@ -1,10 +1,7 @@
 import { Request, Response } from "express";
 import { invalidateToken } from "../services/tokenService";
 
-export async function logoutController(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function logoutController(req: Request, res: Response): Promise<void> {
   const authHeader = req.headers["authorization"];
   if (!authHeader) {
     res.status(400).json({ message: "Missing token" });

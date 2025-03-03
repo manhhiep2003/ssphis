@@ -2,11 +2,7 @@ import qs from "qs";
 import crypto from "crypto";
 import { vnpayConfig } from "../configs/vnpay.config";
 
-export const buildVnpayUrl = (
-  orderInfo: string,
-  amount: number,
-  orderId: string
-) => {
+export const buildVnpayUrl = (orderInfo: string, amount: number, orderId: string) => {
   const { vnp_TmnCode, vnp_Url, vnp_ReturnUrl, vnp_HashSecret } = vnpayConfig;
 
   const date = new Date();
@@ -34,9 +30,7 @@ export const buildVnpayUrl = (
   const queryString = qs.stringify(sortedParams, { encode: false });
 
   const hmac = crypto.createHmac("sha512", vnp_HashSecret);
-  const secureHash = hmac
-    .update(Buffer.from(queryString, "utf-8"))
-    .digest("hex");
+  const secureHash = hmac.update(Buffer.from(queryString, "utf-8")).digest("hex");
 
   return `${vnp_Url}?${queryString}&vnp_SecureHash=${secureHash}`;
 };

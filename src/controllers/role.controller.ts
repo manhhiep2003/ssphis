@@ -13,12 +13,10 @@ export class RoleController {
         data: roles,
       });
     } catch (error: any) {
-      res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({
-          message: ROLES_MESSAGES.RETRIEVE_FAILURE,
-          error: error.message,
-        });
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: ROLES_MESSAGES.RETRIEVE_FAILURE,
+        error: error.message,
+      });
     }
   }
 
@@ -31,17 +29,13 @@ export class RoleController {
           data: role,
         });
       } else {
-        res
-          .status(HTTP_STATUS.NOT_FOUND)
-          .json({ message: ROLES_MESSAGES.NOT_FOUND });
+        res.status(HTTP_STATUS.NOT_FOUND).json({ message: ROLES_MESSAGES.NOT_FOUND });
       }
     } catch (error: any) {
-      res
-        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json({
-          message: ROLES_MESSAGES.RETRIEVE_SINGLE_FAILURE,
-          error: error.message,
-        });
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: ROLES_MESSAGES.RETRIEVE_SINGLE_FAILURE,
+        error: error.message,
+      });
     }
   }
 
@@ -61,11 +55,8 @@ export class RoleController {
 
   static async updateRole(req: Request, res: Response) {
     try {
-      const role = await RoleService.updateRole(
-        Number(req.params.id),
-        req.body
-      );
-      
+      const role = await RoleService.updateRole(Number(req.params.id), req.body);
+
       res.status(HTTP_STATUS.OK).json({
         message: ROLES_MESSAGES.UPDATE_SUCCESS,
         data: role,
@@ -80,9 +71,7 @@ export class RoleController {
   static async deleteRole(req: Request, res: Response) {
     try {
       await RoleService.deleteRole(Number(req.params.id));
-      res
-        .status(HTTP_STATUS.NO_CONTENT)
-        .json({ message: ROLES_MESSAGES.DELETE_SUCCESS });
+      res.status(HTTP_STATUS.NO_CONTENT).json({ message: ROLES_MESSAGES.DELETE_SUCCESS });
     } catch (error: any) {
       res
         .status(HTTP_STATUS.BAD_REQUEST)

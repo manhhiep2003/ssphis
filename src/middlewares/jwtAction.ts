@@ -33,7 +33,7 @@ interface CustomRequest extends Request {
 const verifyToken = async (
   req: CustomRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   const authHeader = req.headers["authorization"];
   if (!authHeader) {

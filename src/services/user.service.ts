@@ -16,7 +16,7 @@ export async function createUser(
   phone: string,
   gender: string,
   roleCode: string,
-  createdBy: string
+  createdBy: string,
 ) {
   // Kiểm tra xem roleCode có tồn tại không
   const role = await prisma.role.findUnique({
@@ -127,7 +127,7 @@ export async function updateUserProfile(
     email?: string;
     description?: string;
     updatedBy?: string;
-  }
+  },
 ) {
   const existingUser = await prisma.user.findUnique({
     where: { userCode: userCode },
@@ -213,5 +213,3 @@ export async function updateUserStatusById(id: number, status: boolean) {
     status: updatedUser.status,
   };
 }
-
-

@@ -7,8 +7,7 @@ const swaggerOptions: Options = {
     info: {
       title: "Software Supporting Psychological Health in Schools API",
       version: "1.0.0",
-      description:
-        "API documentation for Software Supporting Psychological Health in Schools",
+      description: "API documentation for Software Supporting Psychological Health in Schools",
     },
     servers: [
       {

@@ -3,30 +3,10 @@ import { verifyToken } from "../middlewares/jwtAction";
 import { SurveyResultController } from "../controllers/surveyResult.controller";
 
 const router = Router();
-router.post(
-  "/survey-result",
-  verifyToken,
-  SurveyResultController.createQuestion
-);
-router.get(
-  "/survey-result",
-  verifyToken,
-  SurveyResultController.getAllSurveyResult
-);
-router.get(
-  "/survey-result/:id",
-  verifyToken,
-  SurveyResultController.getSurveyResultById
-);
-router.put(
-  "/survey-result/:id",
-  verifyToken,
-  SurveyResultController.updateSurveyResult
-);
-router.delete(
-  "/survey-result/:id",
-  verifyToken,
-  SurveyResultController.deleteSurveyResult
-);
+router.post("/survey-result", verifyToken, SurveyResultController.createQuestion);
+router.get("/survey-result", verifyToken, SurveyResultController.getAllSurveyResult);
+router.get("/survey-result/:id", verifyToken, SurveyResultController.getSurveyResultById);
+router.put("/survey-result/:id", verifyToken, SurveyResultController.updateSurveyResult);
+router.delete("/survey-result/:id", verifyToken, SurveyResultController.deleteSurveyResult);
 
 export default router;

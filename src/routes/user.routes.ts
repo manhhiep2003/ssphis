@@ -19,11 +19,6 @@ router.get("/users", verifyToken, getAllUsersHandler);
 router.get("/users/:roleCode", verifyToken, getUsersByRoleHandler);
 router.get("/public/users/:id", getUserByIdHandler);
 router.put("/profile/:userCode", verifyToken, updateUserProfileHandler);
-router.put(
-  "/users/:id",
-  verifyToken,
-  authorizeRoles("R3", "R4"),
-  updateUserStatusHandler
-);
+router.put("/users/:id", verifyToken, authorizeRoles("R3", "R4"), updateUserStatusHandler);
 
 export default router;

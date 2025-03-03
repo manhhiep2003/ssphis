@@ -74,7 +74,7 @@ export class TimeSlotService {
   static async createTimeSlots(
     user_id: number,
     slots: { start_time: string; end_time: string }[],
-    createdBy: string
+    createdBy: string,
   ) {
     const validSlots = slots.filter((slot) => slot.start_time && slot.end_time);
 
@@ -93,7 +93,7 @@ export class TimeSlotService {
   static async updateTimeSlot(
     time_slot_id: number,
     data: { start_time?: string; end_time?: string; status?: Status },
-    updatedBy: string
+    updatedBy: string,
   ) {
     if (data.start_time) {
       const existingSlot = await prisma.time_Slots.findFirst({

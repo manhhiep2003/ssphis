@@ -42,7 +42,7 @@ export class QuestionOptionService {
 
   static async updateQuestionOption(
     optionId: number,
-    data: { optionText?: string; questionId?: bigint; value: number }
+    data: { optionText?: string; questionId?: bigint; value: number },
   ) {
     return await prisma.questionOption.update({
       where: { optionId },

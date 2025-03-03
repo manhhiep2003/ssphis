@@ -39,7 +39,7 @@ export class SurveyResultService {
 
   static async updateSurveyResult(
     surveyResultId: number,
-    data: { userId?: bigint; surveyId?: bigint }
+    data: { userId?: bigint; surveyId?: bigint },
   ) {
     return await prisma.surveyResult.update({
       where: { surveyResultId },

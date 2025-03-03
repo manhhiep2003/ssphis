@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 export async function validateTimeSlotsRequest(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   const { user_id, slots } = req.body;
 
@@ -15,9 +15,7 @@ export async function validateTimeSlotsRequest(
   }
   const validSlots = slots.filter((slot) => slot.start_time && slot.end_time);
   if (validSlots.length === 0) {
-    res
-      .status(400)
-      .json({ message: "Each slot must have start_time and end_time" });
+    res.status(400).json({ message: "Each slot must have start_time and end_time" });
     return;
   }
   const existingSlots = await prisma.time_Slots.findMany({
@@ -28,20 +26,14 @@ export async function validateTimeSlotsRequest(
   });
 
   if (existingSlots.length > 0) {
-    res
-      .status(400)
-      .json({ message: "A time slot with this start_time already exists" });
+    res.status(400).json({ message: "A time slot with this start_time already exists" });
     return;
   }
 
   next();
 }
 
-export function validateUserIdRequest(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
+export function validateUserIdRequest(req: Request, res: Response, next: NextFunction): void {
   const { user_id } = req.query;
 
   if (!user_id) {

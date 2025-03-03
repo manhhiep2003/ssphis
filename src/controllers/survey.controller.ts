@@ -44,9 +44,7 @@ export class SurveyController {
           data: questions,
         });
       } else {
-        res
-          .status(HTTP_STATUS.NOT_FOUND)
-          .json({ message: SURVEY_MESSAGES.NOT_FOUND });
+        res.status(HTTP_STATUS.NOT_FOUND).json({ message: SURVEY_MESSAGES.NOT_FOUND });
       }
     } catch (error: any) {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({

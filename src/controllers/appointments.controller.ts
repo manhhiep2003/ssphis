@@ -3,10 +3,7 @@ import { Request, Response } from "express";
 
 import HTTP_STATUS from "../constants/httpStatus";
 import { APPOINTMENTS_MESSAGES } from "../constants/messages";
-import {
-  AppointmentsService,
-  AppointmentStatus,
-} from "../services/appointments.service";
+import { AppointmentsService, AppointmentStatus } from "../services/appointments.service";
 
 export class AppointmentsController {
   static async getAllAppointments(req: Request, res: Response) {
@@ -26,9 +23,7 @@ export class AppointmentsController {
 
   static async getAppointmentsById(req: Request, res: Response) {
     try {
-      const appointment = await AppointmentsService.getAppointmentsById(
-        Number(req.params.id)
-      );
+      const appointment = await AppointmentsService.getAppointmentsById(Number(req.params.id));
       if (appointment) {
         res.status(HTTP_STATUS.OK).json({
           message: APPOINTMENTS_MESSAGES.RETRIEVE_SINGLE_SUCCESS,
@@ -47,19 +42,12 @@ export class AppointmentsController {
     }
   }
 
-  static async getAppointmentsByUserId(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  static async getAppointmentsByUserId(req: Request, res: Response): Promise<void> {
     try {
       const user_id = Number(req.query.user_id);
-      const student_id = req.query.student_id
-        ? Number(req.query.student_id)
-        : undefined;
+      const student_id = req.query.student_id ? Number(req.query.student_id) : undefined;
       const statusParam = req.query.status as string;
-      const time_slot_id = req.query.time_slot_id
-        ? Number(req.query.time_slot_id)
-        : undefined;
+      const time_slot_id = req.query.time_slot_id ? Number(req.query.time_slot_id) : undefined;
       let status: AppointmentStatus | undefined;
 
       if (!user_id) {
@@ -71,9 +59,7 @@ export class AppointmentsController {
 
       if (
         statusParam &&
-        Object.values(AppointmentStatus).includes(
-          statusParam as AppointmentStatus
-        )
+        Object.values(AppointmentStatus).includes(statusParam as AppointmentStatus)
       ) {
         status = statusParam as AppointmentStatus;
       }
@@ -82,7 +68,7 @@ export class AppointmentsController {
         user_id,
         student_id,
         status,
-        time_slot_id
+        time_slot_id,
       );
 
       if (appointments.length > 0) {
@@ -111,16 +97,11 @@ export class AppointmentsController {
     }
   }
 
-  static async getAppointmentsByUser(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  static async getAppointmentsByUser(req: Request, res: Response): Promise<void> {
     try {
       const user_id = Number(req.query.user_id);
       const statusParam = req.query.status as string;
-      const time_slot_id = req.query.time_slot_id
-        ? Number(req.query.time_slot_id)
-        : undefined;
+      const time_slot_id = req.query.time_slot_id ? Number(req.query.time_slot_id) : undefined;
       let status: AppointmentStatus | undefined;
 
       if (!user_id) {
@@ -132,9 +113,7 @@ export class AppointmentsController {
 
       if (
         statusParam &&
-        Object.values(AppointmentStatus).includes(
-          statusParam as AppointmentStatus
-        )
+        Object.values(AppointmentStatus).includes(statusParam as AppointmentStatus)
       ) {
         status = statusParam as AppointmentStatus;
       }
@@ -142,7 +121,7 @@ export class AppointmentsController {
       const appointments = await AppointmentsService.getAppointmentsByUser(
         user_id,
         status,
-        time_slot_id
+        time_slot_id,
       );
 
       if (appointments.length > 0) {
@@ -180,7 +159,7 @@ export class AppointmentsController {
       const createdAppointments = await AppointmentsService.createAppointments(
         user_id,
         appointments,
-        createdBy
+        createdBy,
       );
 
       res.status(HTTP_STATUS.CREATED).json({
@@ -204,7 +183,7 @@ export class AppointmentsController {
       const updatedAppointment = await AppointmentsService.updateAppointments(
         appointment_id,
         { status, linkMeeting },
-        updatedBy
+        updatedBy,
       );
 
       res.status(HTTP_STATUS.OK).json({

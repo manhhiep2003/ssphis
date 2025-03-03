@@ -86,7 +86,7 @@ export class AppointmentsService {
     user_id: number,
     student_id?: number,
     status?: AppointmentStatus,
-    time_slot_id?: number
+    time_slot_id?: number,
   ) {
     // Build where condition
     const whereCondition: any = {
@@ -151,7 +151,7 @@ export class AppointmentsService {
   static async getAppointmentsByUser(
     user_id: number,
     status?: AppointmentStatus,
-    time_slot_id?: number
+    time_slot_id?: number,
   ) {
     const whereCondition: any = {
       user_id: user_id,
@@ -206,11 +206,7 @@ export class AppointmentsService {
     }));
   }
 
-  static async createAppointments(
-    user_id: number,
-    appointments: any[],
-    createdBy: string
-  ) {
+  static async createAppointments(user_id: number, appointments: any[], createdBy: string) {
     const createdAppointments = [];
 
     for (const appointment of appointments) {
@@ -242,7 +238,7 @@ export class AppointmentsService {
   static async updateAppointments(
     appointment_id: number,
     data: { status: AppointmentStatus; linkMeeting?: string },
-    updatedBy: string
+    updatedBy: string,
   ) {
     const updatedAppointment = await prisma.appointments.update({
       where: { appointment_id },

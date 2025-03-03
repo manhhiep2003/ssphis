@@ -34,18 +34,14 @@ export class SurveyResultController {
 
   static async getSurveyResultById(req: Request, res: Response) {
     try {
-      const surveyResult = await SurveyResultService.getSurveyResultById(
-        Number(req.params.id)
-      );
+      const surveyResult = await SurveyResultService.getSurveyResultById(Number(req.params.id));
       if (surveyResult) {
         res.status(HTTP_STATUS.OK).json({
           message: SURVEY_RESULT_MESSAGES.RETRIEVE_SINGLE_SUCCESS,
           data: surveyResult,
         });
       } else {
-        res
-          .status(HTTP_STATUS.NOT_FOUND)
-          .json({ message: SURVEY_RESULT_MESSAGES.NOT_FOUND });
+        res.status(HTTP_STATUS.NOT_FOUND).json({ message: SURVEY_RESULT_MESSAGES.NOT_FOUND });
       }
     } catch (error: any) {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
@@ -74,13 +70,10 @@ export class SurveyResultController {
     try {
       const { id } = req.params;
       const { userId, surveyId } = req.body;
-      const updatedSurvey = await SurveyResultService.updateSurveyResult(
-        Number(id),
-        {
-          userId: userId ? BigInt(userId) : undefined,
-          surveyId: surveyId ? BigInt(surveyId) : undefined,
-        }
-      );
+      const updatedSurvey = await SurveyResultService.updateSurveyResult(Number(id), {
+        userId: userId ? BigInt(userId) : undefined,
+        surveyId: surveyId ? BigInt(surveyId) : undefined,
+      });
 
       res.status(HTTP_STATUS.OK).json({
         message: SURVEY_RESULT_MESSAGES.UPDATE_SUCCESS,

@@ -12,10 +12,7 @@ import {
 import HTTP_STATUS from "../constants/httpStatus";
 import { USERS_MESSAGES } from "../constants/messages";
 
-export async function createUserHandler(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function createUserHandler(req: Request, res: Response): Promise<void> {
   const {
     username,
     email,
@@ -30,9 +27,7 @@ export async function createUserHandler(
   } = req.body;
 
   if (!username || !email || !password || !phone || !roleCode) {
-    res
-      .status(HTTP_STATUS.BAD_REQUEST)
-      .json({ message: USERS_MESSAGES.MISSING_FIELDS });
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ message: USERS_MESSAGES.MISSING_FIELDS });
     return;
   }
 
@@ -47,7 +42,7 @@ export async function createUserHandler(
       phone,
       gender,
       roleCode,
-      createdBy
+      createdBy,
     );
 
     const userWithoutBigInt = {
@@ -73,16 +68,11 @@ export async function createUserHandler(
   }
 }
 
-export async function loginUserHandler(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function loginUserHandler(req: Request, res: Response): Promise<void> {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    res
-      .status(HTTP_STATUS.BAD_REQUEST)
-      .json({ message: USERS_MESSAGES.MISSING_CREDENTIALS });
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ message: USERS_MESSAGES.MISSING_CREDENTIALS });
     return;
   }
 
@@ -101,16 +91,11 @@ export async function loginUserHandler(
     });
   } catch (error: any) {
     console.error(error);
-    res
-      .status(HTTP_STATUS.UNAUTHORIZED)
-      .json({ message: USERS_MESSAGES.LOGIN_FAILURE });
+    res.status(HTTP_STATUS.UNAUTHORIZED).json({ message: USERS_MESSAGES.LOGIN_FAILURE });
   }
 }
 
-export async function getAllUsersHandler(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function getAllUsersHandler(req: Request, res: Response): Promise<void> {
   try {
     const users = await getUserService();
 
@@ -132,10 +117,7 @@ export async function getAllUsersHandler(
   }
 }
 
-export async function getUsersByRoleHandler(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function getUsersByRoleHandler(req: Request, res: Response): Promise<void> {
   try {
     const { roleCode } = req.params;
 
@@ -173,14 +155,10 @@ export async function getUsersByRoleHandler(
   }
 }
 
-export async function updateUserProfileHandler(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function updateUserProfileHandler(req: Request, res: Response): Promise<void> {
   try {
     const { userCode } = req.params;
-    const { firstName, lastName, phone, gender, image, email,description, updatedBy } =
-      req.body;
+    const { firstName, lastName, phone, gender, image, email, description, updatedBy } = req.body;
 
     const updatedUser = await updateUserProfile(userCode, {
       firstName,
@@ -217,10 +195,7 @@ export async function updateUserProfileHandler(
   }
 }
 
-export async function getUserByIdHandler(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function getUserByIdHandler(req: Request, res: Response): Promise<void> {
   try {
     const id = Number(req.params.id);
 
@@ -252,10 +227,7 @@ export async function getUserByIdHandler(
   }
 }
 
-export async function updateUserStatusHandler(
-  req: Request,
-  res: Response
-): Promise<void> {
+export async function updateUserStatusHandler(req: Request, res: Response): Promise<void> {
   try {
     const id = Number(req.params.id);
     const { status } = req.body;

@@ -4,10 +4,7 @@ import { Category, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export class CategoryService {
-  static async createCategory(data: {
-    name: string;
-    description: string;
-  }): Promise<Category> {
+  static async createCategory(data: { name: string; description: string }): Promise<Category> {
     return prisma.category.create({ data });
   }
 

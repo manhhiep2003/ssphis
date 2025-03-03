@@ -110,7 +110,7 @@ export class ProgramService {
       categoryId: bigint;
       price?: Prisma.Decimal;
       rating?: number;
-    }
+    },
   ) {
     return await prisma.program.update({
       where: { programId },

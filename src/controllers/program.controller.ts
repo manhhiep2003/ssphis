@@ -67,18 +67,14 @@ export class ProgramController {
 
   static async getProgramById(req: Request, res: Response) {
     try {
-      const program = await ProgramService.getProgramById(
-        Number(req.params.id)
-      );
+      const program = await ProgramService.getProgramById(Number(req.params.id));
       if (program) {
         res.status(HTTP_STATUS.OK).json({
           message: PROGRAM_MESSAGES.RETRIEVE_SINGLE_SUCCESS,
           data: program,
         });
       } else {
-        res
-          .status(HTTP_STATUS.NOT_FOUND)
-          .json({ message: PROGRAM_MESSAGES.NOT_FOUND });
+        res.status(HTTP_STATUS.NOT_FOUND).json({ message: PROGRAM_MESSAGES.NOT_FOUND });
       }
     } catch (error: any) {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({

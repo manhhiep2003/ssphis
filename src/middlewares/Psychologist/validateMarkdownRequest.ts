@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export async function validateMarkdownRequest(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   const {
     contentHtml,

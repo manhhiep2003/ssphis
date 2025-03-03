@@ -2,10 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 export class QuestionService {
-  static async createQuestion(data: {
-    questionText: string;
-    surveyId: bigint;
-  }) {
+  static async createQuestion(data: { questionText: string; surveyId: bigint }) {
     return await prisma.question.create({
       data: {
         questionText: data.questionText,
@@ -40,7 +37,7 @@ export class QuestionService {
 
   static async updateQuestion(
     questionId: number,
-    data: { questionText?: string; surveyId?: bigint }
+    data: { questionText?: string; surveyId?: bigint },
   ) {
     return await prisma.question.update({
       where: { questionId },

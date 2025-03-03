@@ -8,12 +8,11 @@ export class QuestionOptionController {
   static async createQuestion(req: Request, res: Response) {
     try {
       const { optionText, questionId, value } = req.body;
-      const newQuestionOption =
-        await QuestionOptionService.createQuestionOption({
-          optionText,
-          questionId: BigInt(questionId),
-          value,
-        });
+      const newQuestionOption = await QuestionOptionService.createQuestionOption({
+        optionText,
+        questionId: BigInt(questionId),
+        value,
+      });
 
       const sanitizedQuestionOption = {
         ...newQuestionOption,
@@ -36,7 +35,7 @@ export class QuestionOptionController {
   static async getQuestionOptionById(req: Request, res: Response) {
     try {
       const questionOption = await QuestionOptionService.getQuestionOptionById(
-        Number(req.params.id)
+        Number(req.params.id),
       );
       if (questionOption) {
         res.status(HTTP_STATUS.OK).json({
@@ -44,9 +43,7 @@ export class QuestionOptionController {
           data: questionOption,
         });
       } else {
-        res
-          .status(HTTP_STATUS.NOT_FOUND)
-          .json({ message: QUESTION_OPTION_MESSAGES.NOT_FOUND });
+        res.status(HTTP_STATUS.NOT_FOUND).json({ message: QUESTION_OPTION_MESSAGES.NOT_FOUND });
       }
     } catch (error: any) {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
@@ -75,14 +72,11 @@ export class QuestionOptionController {
     try {
       const { id } = req.params;
       const { optionText, questionId, value } = req.body;
-      const updatedSurvey = await QuestionOptionService.updateQuestionOption(
-        Number(id),
-        {
-          optionText,
-          questionId: questionId ? BigInt(questionId) : undefined,
-          value,
-        }
-      );
+      const updatedSurvey = await QuestionOptionService.updateQuestionOption(Number(id), {
+        optionText,
+        questionId: questionId ? BigInt(questionId) : undefined,
+        value,
+      });
 
       res.status(HTTP_STATUS.OK).json({
         message: QUESTION_OPTION_MESSAGES.UPDATE_SUCCESS,

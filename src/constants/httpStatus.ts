@@ -9,7 +9,7 @@ const HTTP_STATUS = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
-  BAD_REQUEST: 400
-} as const
+  BAD_REQUEST: 400,
+} as const;
 
-export default HTTP_STATUS
+export default HTTP_STATUS;

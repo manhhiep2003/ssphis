@@ -13,13 +13,13 @@ router.get(
   "/timeSlotByUser",
   verifyToken,
   validateUserIdRequest,
-  TimeSlotController.getTimeSlotByUserId
+  TimeSlotController.getTimeSlotByUserId,
 );
 router.post(
   "/timeSlot-array",
   verifyToken,
   validateTimeSlotsRequest,
-  TimeSlotController.createTimeSlots
+  TimeSlotController.createTimeSlots,
 );
 router.put("/timeSlot/:id", verifyToken, TimeSlotController.updateTimeSlot);
 router.delete("/timeSlot/:id", verifyToken, TimeSlotController.deleteTimeSlot);

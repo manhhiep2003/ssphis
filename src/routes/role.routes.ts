@@ -6,12 +6,7 @@ import { verifyToken } from "../middlewares/jwtAction";
 const router = Router();
 router.get("/roles", verifyToken, RoleController.getAllRoles);
 router.get("/roles/:id", verifyToken, RoleController.getRoleById);
-router.post(
-  "/roles",
-  verifyToken,
-  validateRoleRequest,
-  RoleController.createRole
-);
+router.post("/roles", verifyToken, validateRoleRequest, RoleController.createRole);
 router.put("/roles/:id", verifyToken, RoleController.updateRole);
 router.delete("/roles/:id", verifyToken, RoleController.deleteRole);
 

@@ -22,18 +22,14 @@ export class CategoryController {
 
   static async getCategoryById(req: Request, res: Response) {
     try {
-      const category = await CategoryService.getCategoryById(
-        Number(req.params.id)
-      );
+      const category = await CategoryService.getCategoryById(Number(req.params.id));
       if (category) {
         res.status(HTTP_STATUS.OK).json({
           message: CATEGORY_MESSAGES.RETRIEVE_SINGLE_SUCCESS,
           data: category,
         });
       } else {
-        res
-          .status(HTTP_STATUS.NOT_FOUND)
-          .json({ message: CATEGORY_MESSAGES.NOT_FOUND });
+        res.status(HTTP_STATUS.NOT_FOUND).json({ message: CATEGORY_MESSAGES.NOT_FOUND });
       }
     } catch (error: any) {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
@@ -64,10 +60,7 @@ export class CategoryController {
 
   static async updateCategory(req: Request, res: Response) {
     try {
-      const category = await CategoryService.updateCategory(
-        Number(req.params.id),
-        req.body
-      );
+      const category = await CategoryService.updateCategory(Number(req.params.id), req.body);
 
       res.status(HTTP_STATUS.OK).json({
         message: CATEGORY_MESSAGES.UPDATE_SUCCESS,
@@ -84,9 +77,7 @@ export class CategoryController {
   static async deleteCategory(req: Request, res: Response) {
     try {
       await CategoryService.deleteCategory(Number(req.params.id));
-      res
-        .status(HTTP_STATUS.NO_CONTENT)
-        .json({ message: CATEGORY_MESSAGES.DELETE_SUCCESS });
+      res.status(HTTP_STATUS.NO_CONTENT).json({ message: CATEGORY_MESSAGES.DELETE_SUCCESS });
     } catch (error: any) {
       res
         .status(HTTP_STATUS.BAD_REQUEST)

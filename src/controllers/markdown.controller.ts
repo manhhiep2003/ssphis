@@ -22,9 +22,7 @@ export class MarkdownController {
 
   static async getMarkdownById(req: Request, res: Response) {
     try {
-      const markdown = await MarkdownService.getMarkdownById(
-        Number(req.params.id)
-      );
+      const markdown = await MarkdownService.getMarkdownById(Number(req.params.id));
       if (markdown) {
         res.status(HTTP_STATUS.OK).json({
           message: MARKDOWN_MESSAGES.RETRIEVE_SINGLE_SUCCESS,
@@ -45,15 +43,13 @@ export class MarkdownController {
 
   static async getMarkdownsByUserId(req: Request, res: Response) {
     try {
-      const markdowns = await MarkdownService.getMarkdownsByUserId(
-        Number(req.params.user_id)
-      );
+      const markdowns = await MarkdownService.getMarkdownsByUserId(Number(req.params.user_id));
       // console.log("Markdowns:", req.params.user_id);
-      
+
       if (!markdowns || markdowns.length === 0) {
-         res.status(HTTP_STATUS.NOT_FOUND).json({
+        res.status(HTTP_STATUS.NOT_FOUND).json({
           message: MARKDOWN_MESSAGES.NOT_FOUND,
-          data: []
+          data: [],
         });
         return;
       }
@@ -93,10 +89,7 @@ export class MarkdownController {
 
   static async updateMarkdown(req: Request, res: Response) {
     try {
-      const markdown = await MarkdownService.updateMarkdown(
-        Number(req.params.id),
-        req.body
-      );
+      const markdown = await MarkdownService.updateMarkdown(Number(req.params.id), req.body);
       res.status(HTTP_STATUS.OK).json({
         message: MARKDOWN_MESSAGES.UPDATE_SUCCESS,
         data: markdown,

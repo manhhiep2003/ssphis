@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PrismaClient } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import {
-  CreateMarkdownDto,
-  UpdateMarkdownDto,
-} from "../interfaces/markdown.interface";
+import { CreateMarkdownDto, UpdateMarkdownDto } from "../interfaces/markdown.interface";
 
 const prisma = new PrismaClient();
 // Helper function to serialize BigInt
@@ -82,9 +79,7 @@ export class MarkdownService {
     } catch (error: any) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === "P2003") {
-          throw new Error(
-            "Foreign key constraint failed - Invalid user_id or category_id"
-          );
+          throw new Error("Foreign key constraint failed - Invalid user_id or category_id");
         }
       }
       throw error;
@@ -112,10 +107,7 @@ export class MarkdownService {
       });
       return serializeMarkdown(markdown);
     } catch (error: any) {
-      if (
-        error instanceof PrismaClientKnownRequestError &&
-        error.code === "P2002"
-      ) {
+      if (error instanceof PrismaClientKnownRequestError && error.code === "P2002") {
         throw new Error("Unique constraint failed on the fields: (`user_id`)");
       }
       throw error;

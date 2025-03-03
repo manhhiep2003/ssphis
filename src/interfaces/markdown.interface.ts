@@ -14,5 +14,5 @@ export interface IMarkdown {
   updatedBy?: string;
 }
 
-export type CreateMarkdownDto = Omit<IMarkdown, 'id' | 'createdAt' | 'updatedAt'>;
-export type UpdateMarkdownDto = Partial<Omit<IMarkdown, 'id' | 'user_id'>>;
+export type CreateMarkdownDto = Omit<IMarkdown, "id" | "createdAt" | "updatedAt">;
+export type UpdateMarkdownDto = Partial<Omit<IMarkdown, "id" | "user_id">>;

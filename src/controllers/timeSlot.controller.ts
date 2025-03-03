@@ -26,9 +26,7 @@ export class TimeSlotController {
           data: role,
         });
       } else {
-        res
-          .status(HTTP_STATUS.NOT_FOUND)
-          .json({ message: TIMESLOT_MESSAGES.NOT_FOUND });
+        res.status(HTTP_STATUS.NOT_FOUND).json({ message: TIMESLOT_MESSAGES.NOT_FOUND });
       }
     } catch (error: any) {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
@@ -62,19 +60,11 @@ export class TimeSlotController {
     }
   }
 
-  static async createTimeSlots(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> {
+  static async createTimeSlots(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { user_id, slots } = req.body;
       const createdBy = (req as any).user?.id?.toString();
-      const timeSlots = await TimeSlotService.createTimeSlots(
-        user_id,
-        slots,
-        createdBy
-      );
+      const timeSlots = await TimeSlotService.createTimeSlots(user_id, slots, createdBy);
       res.status(HTTP_STATUS.CREATED).json({
         message: TIMESLOT_MESSAGES.CREATE_SUCCESS,
         data: timeSlots.slots,
@@ -101,7 +91,7 @@ export class TimeSlotController {
           end_time,
           status,
         },
-        updatedBy
+        updatedBy,
       );
 
       // ✅ Convert BigInt to String

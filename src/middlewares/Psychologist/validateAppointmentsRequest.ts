@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 export async function validateAppointmentsRequest(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   const { user_id, appointments } = req.body;
 
@@ -67,7 +67,7 @@ export async function validateAppointmentsRequest(
         res.status(400).json({
           message: APPOINTMENTS_MESSAGES.VALIDATION.TIME_SLOT_NOT_FOUND.replace(
             "{id}",
-            time_slot_id.toString()
+            time_slot_id.toString(),
           ),
         });
         return;
@@ -76,8 +76,10 @@ export async function validateAppointmentsRequest(
       if (timeSlot.appointments.length > 0) {
         const existingAppointment = timeSlot.appointments[0];
         res.status(400).json({
-          message: APPOINTMENTS_MESSAGES.VALIDATION.TIME_SLOT_BOOKED
-            .replace("{startTime}", timeSlot.start_time)
+          message: APPOINTMENTS_MESSAGES.VALIDATION.TIME_SLOT_BOOKED.replace(
+            "{startTime}",
+            timeSlot.start_time,
+          )
             .replace("{endTime}", timeSlot.end_time)
             .replace("{status}", existingAppointment.status)
             .replace("{date}", appointmentDate.toLocaleDateString("vi-VN")),
@@ -87,7 +89,7 @@ export async function validateAppointmentsRequest(
     }
 
     next();
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(500).json({
       message: APPOINTMENTS_MESSAGES.CREATE_FAILURE,
       error: error.message,

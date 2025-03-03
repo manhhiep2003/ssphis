@@ -43,8 +43,8 @@ export class SurveyService {
 
       return JSON.parse(
         JSON.stringify(survey, (_, value) =>
-          typeof value === "bigint" ? value.toString() : value
-        )
+          typeof value === "bigint" ? value.toString() : value,
+        ),
       );
     });
   }
@@ -80,7 +80,7 @@ export class SurveyService {
 
   static async updateSurvey(
     surveyId: number,
-    data: { title?: string; description?: string; categoryId?: bigint }
+    data: { title?: string; description?: string; categoryId?: bigint },
   ) {
     return await prisma.survey.update({
       where: { surveyId },
