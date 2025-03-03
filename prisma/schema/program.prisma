@@ -15,14 +15,14 @@ model Program {
     rating         Int?     @map("rating") @db.Integer()
     ratingCount    Int?     @map("rating_count") @db.Integer()
 
-    categoryId BigInt   @map("category_id")
-    category   Category @relation(fields: [categoryId], references: [categoryId])
-    instructor Instructor[]
+    categoryId  BigInt       @map("category_id")
+    category    Category     @relation(fields: [categoryId], references: [categoryId])
+    instructors Instructor[]
 
-    createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
-    createdBy  String?      @map("created_by") @db.VarChar(36)
-    updatedAt  DateTime?    @updatedAt @map("modified_at") @db.Timestamptz(3)
-    updatedBy  String?      @map("modified_by") @db.VarChar(36)
-    
+    createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+    createdBy String?   @map("created_by") @db.VarChar(36)
+    updatedAt DateTime? @updatedAt @map("modified_at") @db.Timestamptz(3)
+    updatedBy String?   @map("modified_by") @db.VarChar(36)
+
     @@map("program")
 }

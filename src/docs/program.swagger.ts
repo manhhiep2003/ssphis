@@ -150,11 +150,65 @@
  *                 type: integer
  *                 description: The rating of the program
  *                 example: 5
+ *               instructors:
+ *                 type: array
+ *                 description: List of instructors associated with the program
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     instructorName:
+ *                       type: string
+ *                       description: Name of the instructor
+ *                       example: "Nguyễn Văn A"
+ *                     instructorImage:
+ *                       type: string
+ *                       description: Image URL of the instructor
+ *                       example: "https://example.com/instructorA.jpg"
+ *                     instructorTitle:
+ *                       type: string
+ *                       description: Title of the instructor
+ *                       example: "Bác sĩ chuyên khoa"
+ *                     instructorExperience:
+ *                       type: string
+ *                       description: Experience of the instructor
+ *                       example: "10 năm kinh nghiệm trong lĩnh vực giấc ngủ"
+ *                     instructorDescription:
+ *                       type: string
+ *                       description: Short description about the instructor
+ *                       example: "Chuyên gia tư vấn giấc ngủ hàng đầu"
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       201:
  *         description: Program created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Chương trình tạo thành công"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     programId:
+ *                       type: string
+ *                       example: "1"
+ *                     title:
+ *                       type: string
+ *                       example: "Hỗ trợ mất ngủ"
+ *                     instructors:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           instructorId:
+ *                             type: string
+ *                             example: "1"
+ *                           instructorName:
+ *                             type: string
+ *                             example: "Nguyễn Văn A"
  *       400:
  *         description: Invalid input
  *       401:

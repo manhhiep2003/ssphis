@@ -22,6 +22,7 @@ export class ProgramController {
         imageUrl,
         price,
         rating,
+        instructors,
       } = req.body;
       const newProgram = await ProgramService.createProgram({
         title,
@@ -38,12 +39,18 @@ export class ProgramController {
         price,
         rating,
         categoryId: BigInt(categoryId),
+        instructors,
       });
 
       const sanitizedProgram = {
         ...newProgram,
         programId: newProgram.programId.toString(),
         categoryId: newProgram.categoryId.toString(),
+        instructors: newProgram.instructors.map((ins: any) => ({
+          ...ins,
+          instructorId: ins.instructorId.toString(),
+          programId: ins.programId.toString(),
+        })),
       };
 
       res.status(HTTP_STATUS.CREATED).json({
@@ -116,7 +123,7 @@ export class ProgramController {
         rating,
       } = req.body;
       const updatedProgram = await ProgramService.updateProgram(Number(id), {
-       title,
+        title,
         description,
         categoryId,
         startDate,

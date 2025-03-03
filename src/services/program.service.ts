@@ -17,6 +17,13 @@ export class ProgramService {
     categoryId: bigint;
     price?: Prisma.Decimal;
     rating?: number;
+    instructors?: {
+      instructorName?: string;
+      instructorImage?: string;
+      instructorTitle?: string;
+      instructorExperience?: string;
+      instructorDescription?: string;
+    }[];
   }) {
     return await prisma.program.create({
       data: {
@@ -34,6 +41,19 @@ export class ProgramService {
         imageUrl: data.imageUrl,
         price: data.price,
         rating: data.rating,
+        instructors: {
+          create:
+            data.instructors?.map((instructor) => ({
+              instructorName: instructor.instructorName,
+              instructorImage: instructor.instructorImage,
+              instructorTitle: instructor.instructorTitle,
+              instructorExperience: instructor.instructorExperience,
+              instructorDescription: instructor.instructorDescription,
+            })) || [],
+        },
+      },
+      include: {
+        instructors: true,
       },
     });
   }
@@ -55,7 +75,7 @@ export class ProgramService {
   static async getAllPrograms() {
     const programs = await prisma.program.findMany({
       include: {
-        instructor: true,
+        instructors: true,
       },
     });
 
@@ -63,7 +83,7 @@ export class ProgramService {
       ...program,
       programId: program.programId.toString(),
       categoryId: program.categoryId.toString(),
-      instructor: program.instructor.map((inst) => ({
+      instructor: program.instructors.map((inst) => ({
         ...inst,
         instructorId: inst.instructorId.toString(),
         programId: inst.programId.toString(),
