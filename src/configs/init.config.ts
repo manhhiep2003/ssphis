@@ -4,7 +4,7 @@ import { hash } from "bcrypt";
 const prisma = new PrismaClient();
 
 export async function initializeApp() {
-  const roleCodeAdmin = "ADMIN";
+  const roleCodeAdmin = "R4";
 
   const existingAdminRole = await prisma.role.findUnique({
     where: { roleCode: roleCodeAdmin },

@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import authRoute from "./routes/auth.route";
 import userRoutes from "./routes/user.routes";
 import roleRoutes from "./routes/role.routes";
@@ -14,31 +15,43 @@ import questionOptionRoutes from "./routes/questionOption.routes";
 import surveyResultRoutes from "./routes/surveyResult.routes";
 import vnpayRoutes from "./routes/payment.routes";
 import swagger from "./swagger";
-import cors from "cors";
-// import { CronService } from "./services/cron.service";
+import { initializeApp } from "./configs/init.config";
+
 dotenv.config();
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-// Use CORS middleware with options
-app.use(cors());
-app.use(express.json());
-app.use("/api", authRoute);
-app.use("/api", userRoutes);
-app.use("/api", roleRoutes);
-app.use("/api", timeSlotRoutes);
-app.use("/api", appointmentsRoutes);
-app.use("/api", markdownRotes);
-app.use("/api", categoryRoutes);
-app.use("/api", surveyRoutes);
-app.use("/api", programRoutes);
-app.use("/api", questionRoutes);
-app.use("/api", questionOptionRoutes);
-app.use("/api", surveyResultRoutes);
-app.use("/api", vnpayRoutes);
-// CronService.initCronJobs();
-swagger(app);
+async function bootstrap() {
+  const app = express();
+  const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  app.use(cors());
+  app.use(express.json());
+
+  await initializeApp();
+
+  // Routes
+  app.use("/api", authRoute);
+  app.use("/api", userRoutes);
+  app.use("/api", roleRoutes);
+  app.use("/api", timeSlotRoutes);
+  app.use("/api", appointmentsRoutes);
+  app.use("/api", markdownRotes);
+  app.use("/api", categoryRoutes);
+  app.use("/api", surveyRoutes);
+  app.use("/api", programRoutes);
+  app.use("/api", questionRoutes);
+  app.use("/api", questionOptionRoutes);
+  app.use("/api", surveyResultRoutes);
+  app.use("/api", vnpayRoutes);
+
+  // Swagger
+  swagger(app);
+
+  // Start server
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
+}
+
+bootstrap().catch((err) => {
+  console.error("Error during app initialization:", err);
 });
