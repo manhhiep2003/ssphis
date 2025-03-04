@@ -173,8 +173,6 @@ export async function getUserByIdService(id: number) {
     throw new Error("User not found");
   }
 
-  // const { password: _, ...userWithoutPassword } = user;
-
   return {
     id: user.id.toString(),
     username: user.username,
