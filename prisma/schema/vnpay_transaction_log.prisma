@@ -1,0 +1,15 @@
+model VnpayTransactionLog {
+    id               BigInt   @id @default(autoincrement())
+    paymentId        BigInt   @unique // FK tới payment.id
+    vnpAmount        Decimal  @map("vnp_amount") @db.Decimal(12, 0) // Số tiền trả về từ VNPAY
+    vnpBankCode      String   @map("vnp_bank_code") @db.VarChar(20) // Mã ngân hàng
+    vnpTransactionNo String   @map("vnp_transaction_no") @db.VarChar(50) // Mã giao dịch VNPAY
+    vnpResponseCode  String   @map("vnp_response_code") @db.VarChar(10) // 00 = thành công, khác là lỗi
+    vnpTmnCode       String   @map("vnp_tmn_code") @db.VarChar(20) // Mã site trên VNPAY
+    vnpPayDate       DateTime @map("vnp_pay_date") @db.Timestamptz(3) // Thời gian thanh toán
+    createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+    payment Payment @relation(fields: [paymentId], references: [id])
+
+    @@map("vnpay_transaction_log")
+}

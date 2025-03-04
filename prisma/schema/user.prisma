@@ -1,6 +1,6 @@
 model User {
   id          BigInt    @id @default(autoincrement())
-  userCode    String    @unique @map("user_code") @db.VarChar(36) // Cho phép NULL ban đầu
+  userCode    String    @unique @map("user_code") @db.VarChar(36)
   firstName   String?   @map("first_name") @db.VarChar(50)
   lastName    String?   @map("last_name") @db.VarChar(50)
   image       String?   @map("image") @db.VarChar(255)
@@ -22,6 +22,7 @@ model User {
   appointments Appointments[]
   markdown     Markdown[]
   SurveyResult SurveyResult[]
+  Payment      Payment[]
 
   @@map("user")
 }
