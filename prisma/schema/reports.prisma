@@ -1,0 +1,23 @@
+model Reports {
+  report_id       Int               @id @default(autoincrement())
+  appointment_id  Int               @unique
+  user_id         BigInt
+  health_level    HealthLevel       @default(Medium) 
+  health_status   String?           @map("health_status") @db.Text // Tình trạng sức khỏe
+  feedback        String?           @map("feedback") @db.Text // Đánh giá từ người tư vấn
+  recommendations String?           @map("recommendations") @db.Text // Gợi ý sau buổi tư vấn
+  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  createdBy       String?           @map("created_by") @db.VarChar(36)
+  updatedAt       DateTime?         @updatedAt @map("modified_at") @db.Timestamptz(3)
+  updatedBy       String?           @map("modified_by") @db.VarChar(36)
+
+  appointment     Appointments      @relation(fields: [appointment_id], references: [appointment_id])
+  user           User              @relation(fields: [user_id], references: [id])
+
+  @@map("reports")
+}
+enum HealthLevel {
+  Low       // Sức khỏe kém
+  Medium    // Sức khỏe trung bình
+  High      // Sức khỏe tốt
+}

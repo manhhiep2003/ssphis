@@ -12,7 +12,7 @@ model Appointments {
   updatedBy      String?           @map("modified_by") @db.VarChar(36)
   user           User              @relation(fields: [user_id], references: [id])
   timeSlot       Time_Slots        @relation(fields: [time_slot_id], references: [time_slot_id])
-
+  report         Reports?          @relation()
   @@map("appointments")
 }
 
