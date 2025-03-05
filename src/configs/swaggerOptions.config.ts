@@ -11,7 +11,7 @@ const swaggerOptions: Options = {
     },
     servers: [
       {
-        url: process.env.DB_HOSTS || "http://localhost:3001",
+        url: process.env.API_BASE_URL || "http://localhost:3001",
       },
     ],
   },

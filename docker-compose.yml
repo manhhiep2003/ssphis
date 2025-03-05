@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  ssphis-be:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ssphis-be
+    ports:
+      - "3000:3000"
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+
+      VNP_TMN_CODE: ${VNP_TMN_CODE}
+      VNP_HASH_SECRET: ${VNP_HASH_SECRET}
+      VNP_URL: ${VNP_URL}
+      VNP_RETURN_URL: ${VNP_RETURN_URL}
+    env_file:
+      - .env
+    restart: always
+
+volumes:
+  postgres_data:
