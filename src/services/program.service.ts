@@ -83,7 +83,7 @@ export class ProgramService {
       ...program,
       programId: program.programId.toString(),
       categoryId: program.categoryId.toString(),
-      instructor: program.instructors.map((inst) => ({
+      instructors: program.instructors.map((inst) => ({
         ...inst,
         instructorId: inst.instructorId.toString(),
         programId: inst.programId.toString(),
