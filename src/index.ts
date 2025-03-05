@@ -16,6 +16,7 @@ import surveyResultRoutes from "./routes/surveyResult.routes";
 import vnpayRoutes from "./routes/payment.routes";
 import swagger from "./swagger";
 import { initializeApp } from "./configs/init.config";
+import reportRouter from "./routes/reports.routes";
 
 dotenv.config();
 
@@ -42,7 +43,7 @@ async function bootstrap() {
   app.use("/api", questionOptionRoutes);
   app.use("/api", surveyResultRoutes);
   app.use("/api", vnpayRoutes);
-
+  app.use("/api", reportRouter);
   // Swagger
   swagger(app);
 

@@ -23,6 +23,7 @@ model User {
   markdown     Markdown[]
   SurveyResult SurveyResult[]
   Payment      Payment[]
+  reports         Reports[]        @relation()
 
   @@map("user")
 }

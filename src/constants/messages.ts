@@ -170,3 +170,12 @@ export const SURVEY_RESULT_MESSAGES = {
   DELETE_SUCCESS: "Survey result deleted successfully",
   DELETE_FAILURE: "Failed to delete Survey result",
 } as const;
+
+export const REPORT_MESSAGES = {
+  CREATE_SUCCESS: "Report created successfully",
+  CREATE_FAILURE: "Failed to create report",
+  RETRIEVE_SUCCESS: "Report retrieved successfully",
+  RETRIEVE_FAILURE: "Failed to retrieve report",
+  NOT_FOUND: "Report not found",
+  ALREADY_EXISTS: "Report already exists for this appointment"
+} as const;
