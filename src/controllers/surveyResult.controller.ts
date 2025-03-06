@@ -5,27 +5,32 @@ import { SURVEY_RESULT_MESSAGES } from "../constants/messages";
 import { SurveyResultService } from "../services/surveyResult.service";
 
 export class SurveyResultController {
-  static async createQuestion(req: Request, res: Response) {
+  static async submitSurveyResult(req: Request, res: Response) {
     try {
-      const { userId, surveyId } = req.body;
-      const newSurveyResult = await SurveyResultService.createSurveyResult({
-        userId: BigInt(userId),
-        surveyId: BigInt(surveyId),
-      });
+      const { surveyId, userId, answers } = req.body;
 
-      const sanitizedSurveyResult = {
-        ...newSurveyResult,
-        surveyResultId: newSurveyResult.surveyResultId.toString(),
-        userId: newSurveyResult.userId.toString(),
-        surveyId: newSurveyResult.surveyId.toString(),
-      };
+      if (!surveyId || !userId || !Array.isArray(answers) || answers.length === 0) {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: SURVEY_RESULT_MESSAGES.CREATE_SUCCESS,
+          error: "Invalid input data",
+        });
+      }
+
+      const result = await SurveyResultService.submitSurveyResult({
+        surveyId: BigInt(surveyId),
+        userId: BigInt(userId),
+        answers: answers.map((answer: any) => ({
+          questionId: BigInt(answer.questionId),
+          optionId: BigInt(answer.optionId),
+        })),
+      });
 
       res.status(HTTP_STATUS.CREATED).json({
         message: SURVEY_RESULT_MESSAGES.CREATE_SUCCESS,
-        data: sanitizedSurveyResult,
+        data: result,
       });
     } catch (error: any) {
-      res.status(HTTP_STATUS.BAD_REQUEST).json({
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
         message: SURVEY_RESULT_MESSAGES.CREATE_FAILURE,
         error: error.message,
       });

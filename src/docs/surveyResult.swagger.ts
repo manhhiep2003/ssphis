@@ -33,11 +33,12 @@
 
 /**
  * @swagger
- * /api/survey-result:
+ * /api/survey-result/submit:
  *   post:
- *     summary: Create a new survey result
- *     tags:
- *       - SurveyResult
+ *     summary: Submit answers for a survey result
+ *     tags: [SurveyResult]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -47,17 +48,20 @@
  *             properties:
  *               userId:
  *                 type: integer
- *                 description: The user ID associated with the survey result
- *                 example: 1
  *               surveyId:
  *                 type: integer
- *                 description: The survey ID associated with the survey result
- *                 example: 1
- *     security:
- *       - bearerAuth: []
+ *               answers:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     questionId:
+ *                       type: integer
+ *                     optionId:
+ *                       type: integer
  *     responses:
  *       201:
- *         description: Survey result created successfully
+ *         description: Survey result submitted successfully
  *       400:
  *         description: Invalid input
  *       401:
