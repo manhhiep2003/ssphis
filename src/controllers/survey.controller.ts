@@ -15,12 +15,6 @@ export class SurveyController {
         questions,
       });
 
-      // const sanitizedSurvey = {
-      //   ...newSurvey,
-      //   id: newSurvey.surveyId.toString(),
-      //   categoryId: newSurvey.categoryId.toString(),
-      // };
-
       res.status(HTTP_STATUS.CREATED).json({
         message: SURVEY_MESSAGES.CREATE_SUCCESS,
         data: newSurvey,
@@ -63,6 +57,30 @@ export class SurveyController {
       });
     } catch (error: any) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: SURVEY_MESSAGES.RETRIEVE_FAILURE,
+        error: error.message,
+      });
+    }
+  }
+
+  static async getSurveyDetail(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const survey = await SurveyService.getSurveyDetail(BigInt(id));
+
+      if (!survey) {
+        res.status(HTTP_STATUS.NOT_FOUND).json({
+          message: SURVEY_MESSAGES.NOT_FOUND,
+        });
+      }
+
+      res.status(HTTP_STATUS.OK).json({
+        message: SURVEY_MESSAGES.RETRIEVE_SUCCESS,
+        data: survey,
+      });
+    } catch (error: any) {
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
         message: SURVEY_MESSAGES.RETRIEVE_FAILURE,
         error: error.message,
       });
