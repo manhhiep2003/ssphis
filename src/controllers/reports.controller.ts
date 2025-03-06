@@ -35,8 +35,16 @@ export class ReportsController {
   static async getReportById(req: Request, res: Response): Promise<void> {
     try {
       const report_id = Number(req.params.id);
-      const report = await ReportsService.getReportById(report_id);
+      const appointment_id = Number(req.query.appointment_id);
 
+      if (!appointment_id) {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: "Appointment ID is required",
+        });
+        return;
+      }
+
+      const report = await ReportsService.getReportById(report_id, appointment_id);
       if (!report) {
         res.status(HTTP_STATUS.NOT_FOUND).json({
           message: REPORT_MESSAGES.NOT_FOUND,

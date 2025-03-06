@@ -79,9 +79,17 @@ export class ReportsService {
     });
   }
 
-  static async getReportById(report_id: number) {
-    const report = await prisma.reports.findUnique({
-      where: { report_id },
+  static async getReportById(report_id: number, appointment_id?: number) {
+    const where: any = {};
+
+    if (report_id) {
+      where.report_id = report_id;
+    }
+    if (appointment_id) {
+      where.appointment_id = appointment_id;
+    }
+    const report = await prisma.reports.findFirst({
+      where,
       include: {
         appointment: {
           include: {

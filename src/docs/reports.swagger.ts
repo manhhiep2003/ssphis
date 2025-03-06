@@ -110,7 +110,6 @@
  *         description: Internal server error
  */
 
-
 /**
  * @swagger
  * /api/reports:
@@ -144,7 +143,7 @@
  * @swagger
  * /api/reports/{id}:
  *   get:
- *     summary: Get report by ID
+ *     summary: Get report by appointment ID
  *     tags: [Reports]
  *     security:
  *       - bearerAuth: []
@@ -153,8 +152,14 @@
  *         name: id
  *         schema:
  *           type: string
+ *         required: false
+ *         description: The report ID (optional)
+ *       - in: query
+ *         name: appointment_id
+ *         schema:
+ *           type: integer
  *         required: true
- *         description: The report ID
+ *         description: The appointment ID
  *     responses:
  *       200:
  *         description: Report retrieved successfully
