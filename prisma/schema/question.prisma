@@ -1,6 +1,6 @@
 model Question {
     questionId   BigInt @id @default(autoincrement()) @map("question_id")
-    questionText String @map("question_text") @db.VarChar(50)
+    questionText String @map("question_text") @db.VarChar(255)
     surveyId     BigInt @map("survey_id")
     survey       Survey @relation(fields: [surveyId], references: [surveyId])
 
