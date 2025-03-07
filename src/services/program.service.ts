@@ -58,6 +58,36 @@ export class ProgramService {
     });
   }
 
+  static async joinPrograms(userId: bigint, programIds: bigint[]) {
+    const createData = programIds.map((programId) => ({
+      userId,
+      programId,
+    }));
+
+    return await prisma.userProgram.createMany({
+      data: createData,
+      skipDuplicates: true,
+    });
+  }
+
+  static async getProgramsByUserId(userId: bigint) {
+    const userPrograms = await prisma.userProgram.findMany({
+      where: { userId },
+      include: { program: true },
+    });
+
+    return userPrograms.map((userProgram) => ({
+      ...userProgram,
+      userId: userProgram.userId.toString(),
+      programId: userProgram.programId.toString(),
+      program: {
+        ...userProgram.program,
+        programId: userProgram.program.programId.toString(),
+        categoryId: userProgram.program.categoryId?.toString(),
+      },
+    }));
+  }
+
   static async getProgramById(programId: number) {
     const program = await prisma.program.findUnique({
       where: { programId: programId },

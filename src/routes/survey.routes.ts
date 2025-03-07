@@ -6,6 +6,7 @@ const router = Router();
 router.post("/survey", verifyToken, SurveyController.createSurvey);
 router.get("/survey", verifyToken, SurveyController.getAllSurveys);
 router.get("/survey/:id", verifyToken, SurveyController.getSurveyQuestions);
+router.get("/survey/detail/:id", verifyToken, SurveyController.getSurveyDetail);
 router.put("/survey/:id", verifyToken, SurveyController.updateSurvey);
 router.delete("/survey/:id", verifyToken, SurveyController.deleteSurvey);
 

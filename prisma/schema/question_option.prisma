@@ -1,7 +1,7 @@
 model QuestionOption {
     optionId   BigInt   @id @default(autoincrement()) @map("option_id")
     value      Int      @map("value") @db.Integer()
-    optionText String   @map("option_text") @db.VarChar(50)
+    optionText String   @map("option_text") @db.VarChar(255)
     questionId BigInt   @map("question_id")
     question   Question @relation(fields: [questionId], references: [questionId])
 

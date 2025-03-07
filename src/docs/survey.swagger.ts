@@ -214,6 +214,87 @@
 
 /**
  * @swagger
+ * /api/survey/detail/{id}:
+ *   get:
+ *     summary: Retrieve a survey with all its results and user information
+ *     tags:
+ *       - Survey
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The survey ID
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved survey with results and users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Survey retrieved successfully"
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       example: 1
+ *                     title:
+ *                       type: string
+ *                       example: "Khảo sát lo âu (GAD-7)"
+ *                     description:
+ *                       type: string
+ *                       example: "Đánh giá mức độ lo âu"
+ *                     categoryId:
+ *                       type: integer
+ *                       example: 2
+ *                     results:
+ *                       type: array
+ *                       description: List of results submitted for this survey
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: integer
+ *                             example: 10
+ *                           score:
+ *                             type: integer
+ *                             example: 15
+ *                           submittedAt:
+ *                             type: string
+ *                             format: date-time
+ *                             example: "2025-03-06T12:34:56.789Z"
+ *                           user:
+ *                             type: object
+ *                             properties:
+ *                               userCode:
+ *                                 type: string
+ *                                 example: "USER12345"
+ *                               firstName:
+ *                                 type: string
+ *                                 example: "Nguyen"
+ *                               lastName:
+ *                                 type: string
+ *                                 example: "Van A"
+ *                               email:
+ *                                 type: string
+ *                                 example: "nguyenvana@example.com"
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Survey not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
  * /api/survey/{id}:
  *   put:
  *     summary: Update a survey by ID
