@@ -35,11 +35,10 @@ export class ReportsController {
   static async getReportById(req: Request, res: Response): Promise<void> {
     try {
       const appointment_id = Number(req.params.appointment_id);
-      console.log(appointment_id);
-
       const report_id = Number(req.query.report_id);
+      const user_id = req.query.user_id ? Number(req.query.user_id) : undefined;
 
-      const report = await ReportsService.getReportById(report_id, appointment_id);
+      const report = await ReportsService.getReportById(report_id, appointment_id, user_id);
       if (!report) {
         res.status(HTTP_STATUS.NOT_FOUND).json({
           message: REPORT_MESSAGES.NOT_FOUND,
@@ -88,18 +87,61 @@ export class ReportsController {
 
   static async getAllReports(req: Request, res: Response): Promise<void> {
     try {
-      const { health_level, startDate, endDate, userId } = req.query;
-
+      const { 
+        health_level, 
+        startDate, 
+        endDate, 
+        userId,
+        reportId,
+        appointmentId 
+      } = req.query;
+  
       const filters = {
         health_level: health_level as any,
         startDate: startDate ? new Date(startDate as string) : undefined,
         endDate: endDate ? new Date(endDate as string) : undefined,
         userId: userId ? Number(userId) : undefined,
+        reportId: reportId ? Number(reportId) : undefined,
+        appointmentId: appointmentId ? Number(appointmentId) : undefined
       };
-
+  
       const reports = await ReportsService.getAllReports(filters);
-      // Làm phẳng dữ liệu từ report
-      const flattenedData = reports.map((report) => ({
+  
+      // If specific filters are provided and we get exactly one result, return detailed view
+      if ((filters.reportId || filters.appointmentId || filters.userId) && reports.length === 1) {
+        const report = reports[0];
+        const flattenedData = {
+          report_id: report.report_id,
+          appointment_id: report.appointment_id,
+          student_id: report.user_id,
+          full_name: report.appointment.user.firstName + " " + report.appointment.user.lastName,
+          user_email: report.appointment.user.email,
+          user_phone: report.appointment.user.phone,
+          health_level: report.health_level,
+          health_status: report.health_status,
+          feedback: report.feedback,
+          recommendations: report.recommendations,
+          createdAt: report.createdAt,
+          appointment_date: report.appointment.date,
+          appointment_status: report.appointment.status,
+          time_slot_id: report.appointment.timeSlot.time_slot_id,
+          psychologist_id: report.appointment.timeSlot.user_id,
+          full_name_pys: report.appointment.timeSlot.user.firstName + " " + report.appointment.timeSlot.user.lastName,
+          pys_email: report.appointment.timeSlot.user.email,
+          pys_phone: report.appointment.timeSlot.user.phone,
+          start_time: report.appointment.timeSlot.start_time,
+          end_time: report.appointment.timeSlot.end_time,
+        };
+  
+        res.status(HTTP_STATUS.OK).json({
+          message: REPORT_MESSAGES.RETRIEVE_SUCCESS,
+          data: flattenedData,
+        });
+        return;
+      }
+  
+      // Otherwise return list view
+      const flattenedDataList = reports.map((report) => ({
         report_id: report.report_id,
         appointment_id: report.appointment_id,
         student_id: report.user_id,
@@ -115,18 +157,16 @@ export class ReportsController {
         appointment_status: report.appointment.status,
         time_slot_id: report.appointment.timeSlot.time_slot_id,
         psychologist_id: report.appointment.timeSlot.user_id,
-        full_name_pys:
-          report.appointment.timeSlot.user.firstName +
-          " " +
-          report.appointment.timeSlot.user.lastName,
+        full_name_pys: report.appointment.timeSlot.user.firstName + " " + report.appointment.timeSlot.user.lastName,
         pys_email: report.appointment.timeSlot.user.email,
         pys_phone: report.appointment.timeSlot.user.phone,
         start_time: report.appointment.timeSlot.start_time,
         end_time: report.appointment.timeSlot.end_time,
       }));
+  
       res.status(HTTP_STATUS.OK).json({
         message: REPORT_MESSAGES.RETRIEVE_SUCCESS,
-        data: flattenedData,
+        data: flattenedDataList,
       });
     } catch (error: any) {
       res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({

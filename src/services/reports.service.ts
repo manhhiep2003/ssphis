@@ -25,6 +25,14 @@ const formatReportData = (data: any) => {
     JSON.stringify(data, (_, value) => (typeof value === "bigint" ? value.toString() : value)),
   );
 };
+interface FilterOptions {
+  health_level?: HealthLevel;
+  startDate?: Date;
+  endDate?: Date;
+  userId?: number;
+  reportId?: number;
+  appointmentId?: number;
+}
 
 export class ReportsService {
   static async createReport(data: CreateReportDTO) {
@@ -79,7 +87,7 @@ export class ReportsService {
     });
   }
 
-  static async getReportById(report_id: number, appointment_id?: number) {
+  static async getReportById(report_id: number, appointment_id?: number, user_id?: number) {
     const where: any = {};
 
     if (report_id) {
@@ -88,10 +96,16 @@ export class ReportsService {
     if (appointment_id) {
       where.appointment_id = appointment_id;
     }
+    if (user_id) {
+      where.appointment = {
+        user_id: BigInt(user_id),
+      };
+    }
     // Return null if no search criteria provided
     if (Object.keys(where).length === 0) {
       return null;
     }
+
     const report = await prisma.reports.findFirst({
       where,
       include: {
@@ -136,7 +150,6 @@ export class ReportsService {
     if (!report) return null;
     return formatReportData(report);
   }
-
   static async getAllReports(filters?: FilterOptions) {
     const where: any = {};
 
@@ -146,6 +159,14 @@ export class ReportsService {
 
     if (filters?.userId) {
       where.user_id = BigInt(filters.userId);
+    }
+
+    if (filters?.reportId) {
+      where.report_id = filters.reportId;
+    }
+
+    if (filters?.appointmentId) {
+      where.appointment_id = filters.appointmentId;
     }
 
     if (filters?.startDate || filters?.endDate) {
