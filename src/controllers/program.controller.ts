@@ -65,6 +65,23 @@ export class ProgramController {
     }
   }
 
+    static async joinPrograms(req: Request, res: Response) {
+    try {
+      const { userId, programIds } = req.body;
+
+      await ProgramService.joinPrograms(BigInt(userId), programIds.map(BigInt));
+
+      res.status(HTTP_STATUS.CREATED).json({
+        message: PROGRAM_MESSAGES.CREATE_SUCCESS,
+      });
+    } catch (error: any) {
+      res.status(HTTP_STATUS.BAD_REQUEST).json({
+        message: PROGRAM_MESSAGES.CREATE_FAILURE,
+        error: error.message,
+      });
+    }
+  }
+
   static async getProgramById(req: Request, res: Response) {
     try {
       const program = await ProgramService.getProgramById(Number(req.params.id));

@@ -24,6 +24,7 @@ model User {
   SurveyResult SurveyResult[]
   Payment      Payment[]
   reports      Reports[]      @relation()
+  programs     UserProgram[]
 
   @@map("user")
 }

@@ -1,0 +1,12 @@
+model UserProgram {
+    userId    BigInt @map("user_id")
+    programId BigInt @map("program_id")
+
+    joinedAt DateTime @default(now()) @map("joined_at") @db.Timestamptz(3)
+
+    user    User    @relation(fields: [userId], references: [id])
+    program Program @relation(fields: [programId], references: [programId])
+
+    @@id([userId, programId])
+    @@map("user_program")
+}

@@ -18,6 +18,7 @@ model Program {
     categoryId  BigInt       @map("category_id")
     category    Category     @relation(fields: [categoryId], references: [categoryId])
     instructors Instructor[]
+    participants UserProgram[]
 
     createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
     createdBy String?   @map("created_by") @db.VarChar(36)

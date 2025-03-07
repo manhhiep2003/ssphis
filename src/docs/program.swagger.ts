@@ -219,6 +219,51 @@
 
 /**
  * @swagger
+ * /api/program/join:
+ *   post:
+ *     summary: User joins multiple programs
+ *     tags:
+ *       - Program
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId:
+ *                 type: integer
+ *                 description: ID of the user joining the programs
+ *                 example: 1
+ *               programIds:
+ *                 type: array
+ *                 description: List of program IDs to join
+ *                 items:
+ *                   type: integer
+ *                 example: [1, 2, 3]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       201:
+ *         description: User joined programs successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Tham gia chương trình thành công"
+ *       400:
+ *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
  * /api/program:
  *   get:
  *     summary: Retrieve all programs
