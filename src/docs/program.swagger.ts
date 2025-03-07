@@ -264,6 +264,46 @@
 
 /**
  * @swagger
+ * /api/program/user/{id}:
+ *   get:
+ *     summary: Get programs joined by a user
+ *     tags:
+ *       - Program
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The user ID
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of programs the user has joined
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       programId:
+ *                         type: integer
+ *                         example: 1
+ *                       program:
+ *                         $ref: '#/components/schemas/Program'
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
  * /api/program:
  *   get:
  *     summary: Retrieve all programs

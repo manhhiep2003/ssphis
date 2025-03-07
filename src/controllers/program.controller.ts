@@ -65,7 +65,7 @@ export class ProgramController {
     }
   }
 
-    static async joinPrograms(req: Request, res: Response) {
+  static async joinPrograms(req: Request, res: Response) {
     try {
       const { userId, programIds } = req.body;
 
@@ -77,6 +77,23 @@ export class ProgramController {
     } catch (error: any) {
       res.status(HTTP_STATUS.BAD_REQUEST).json({
         message: PROGRAM_MESSAGES.CREATE_FAILURE,
+        error: error.message,
+      });
+    }
+  }
+
+  static async getProgramsByUserId(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const programs = await ProgramService.getProgramsByUserId(BigInt(id));
+
+      res.status(HTTP_STATUS.OK).json({
+        data: programs,
+      });
+    } catch (error: any) {
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: PROGRAM_MESSAGES.RETRIEVE_FAILURE,
         error: error.message,
       });
     }
