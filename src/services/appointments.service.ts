@@ -16,7 +16,7 @@ export class AppointmentsService {
         timeSlot: true,
       },
       orderBy: {
-        date: "asc",
+        createdAt: "desc",
       },
     });
 
@@ -118,7 +118,7 @@ export class AppointmentsService {
         },
       },
       orderBy: {
-        date: "desc",
+        updatedAt: "desc",
       },
     });
 
@@ -176,7 +176,7 @@ export class AppointmentsService {
         },
       },
       orderBy: {
-        date: "desc",
+        updatedAt: "desc",
       },
     });
 
