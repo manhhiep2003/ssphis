@@ -6,22 +6,14 @@ import { ReportsController } from "../controllers/reports.controller";
 const router = Router();
 
 router.post(
-  "/reports/appointment/:id", 
+  "/reports/appointment/:id",
   verifyToken,
   authorizeRoles("R3", "R4"), // Only psychologists can create reports
-  ReportsController.createReport
+  ReportsController.createReport,
 );
 
-router.get(
-  "/reports",
-  verifyToken,
-  ReportsController.getAllReports
-);
+router.get("/reports", verifyToken, ReportsController.getAllReports);
 
-router.get(
-  "/reports/:id",
-  verifyToken,
-  ReportsController.getReportById
-);
+router.get("/reports/appointment/:appointment_id", verifyToken, ReportsController.getReportById);
 
 export default router;

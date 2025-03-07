@@ -34,15 +34,10 @@ export class ReportsController {
 
   static async getReportById(req: Request, res: Response): Promise<void> {
     try {
-      const report_id = Number(req.params.id);
-      const appointment_id = Number(req.query.appointment_id);
+      const appointment_id = Number(req.params.appointment_id);
+      console.log(appointment_id);
 
-      // if (!appointment_id) {
-      //   res.status(HTTP_STATUS.BAD_REQUEST).json({
-      //     message: "Appointment ID is required",
-      //   });
-      //   return;
-      // }
+      const report_id = Number(req.query.report_id);
 
       const report = await ReportsService.getReportById(report_id, appointment_id);
       if (!report) {
