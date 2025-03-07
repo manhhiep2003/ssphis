@@ -132,6 +132,54 @@ export class SurveyResultService {
     return serializedSurveyResults;
   }
 
+  static async getSurveyDetailByUserId(userId: bigint) {
+  const surveyResults = await prisma.surveyResult.findMany({
+    where: { userId },
+    include: {
+      survey: true,
+      user: true,
+    },
+  });
+
+  if (surveyResults.length === 0) {
+    throw new Error("No surveys found for this user");
+  }
+
+  return surveyResults.map((result) => ({
+    surveyResultId: result.surveyResultId.toString(),
+    survey: {
+      surveyId: result.survey.surveyId.toString(),
+      title: result.survey.title,
+      description: result.survey.description,
+      categoryId: result.survey.categoryId.toString(),
+      createdAt: result.survey.createdAt,
+      createdBy: result.survey.createdBy,
+      updatedAt: result.survey.updatedAt,
+      updatedBy: result.survey.updatedBy,
+    },
+    user: {
+      id: result.user.id.toString(),
+      userCode: result.user.userCode,
+      firstName: result.user.firstName,
+      lastName: result.user.lastName,
+      username: result.user.username,
+      email: result.user.email,
+      phone: result.user.phone,
+      gender: result.user.gender,
+      image: result.user.image,
+      description: result.user.description,
+    },
+    depressionScore: result.depressionScore,
+    anxietyScore: result.anxietyScore,
+    stressScore: result.stressScore,
+    depressionLevel: result.depressionLevel,
+    anxietyLevel: result.anxietyLevel,
+    stressLevel: result.stressLevel,
+    createdAt: result.createdAt,
+  }));
+}
+
+
   static async updateSurveyResult(
     surveyResultId: number,
     data: { userId?: bigint; surveyId?: bigint },

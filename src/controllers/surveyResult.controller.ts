@@ -37,6 +37,31 @@ export class SurveyResultController {
     }
   }
 
+  static async getSurveyDetailByUserId(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+
+      if (!id) {
+        res.status(HTTP_STATUS.BAD_REQUEST).json({
+          message: SURVEY_RESULT_MESSAGES.RETRIEVE_FAILURE,
+          error: "User ID is required",
+        });
+      }
+
+      const surveys = await SurveyResultService.getSurveyDetailByUserId(BigInt(id));
+
+      res.status(HTTP_STATUS.OK).json({
+        message: SURVEY_RESULT_MESSAGES.RETRIEVE_SUCCESS,
+        data: surveys,
+      });
+    } catch (error: any) {
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        message: SURVEY_RESULT_MESSAGES.RETRIEVE_FAILURE,
+        error: error.message,
+      });
+    }
+  }
+
   static async getSurveyResultById(req: Request, res: Response) {
     try {
       const surveyResult = await SurveyResultService.getSurveyResultById(Number(req.params.id));

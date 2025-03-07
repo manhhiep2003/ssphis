@@ -89,6 +89,125 @@
 
 /**
  * @swagger
+ * /api/survey-result/user/{id}:
+ *   get:
+ *     summary: Retrieve surveys and results for a specific user
+ *     description: Get all surveys that a user has participated in, along with their survey results and user information.
+ *     tags:
+ *       - SurveyResult
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the user
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of surveys for the specified user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   surveyResultId:
+ *                     type: string
+ *                     example: "1"
+ *                   survey:
+ *                     type: object
+ *                     properties:
+ *                       surveyId:
+ *                         type: string
+ *                         example: "1"
+ *                       title:
+ *                         type: string
+ *                         example: "Depression Test"
+ *                       description:
+ *                         type: string
+ *                         example: "A survey to assess depression levels"
+ *                       categoryId:
+ *                         type: string
+ *                         example: "2"
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                       createdBy:
+ *                         type: string
+ *                         nullable: true
+ *                       updatedAt:
+ *                         type: string
+ *                         format: date-time
+ *                       updatedBy:
+ *                         type: string
+ *                         nullable: true
+ *                   user:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         example: "1"
+ *                       userCode:
+ *                         type: string
+ *                         example: "U123"
+ *                       firstName:
+ *                         type: string
+ *                         example: "John"
+ *                       lastName:
+ *                         type: string
+ *                         example: "Doe"
+ *                       username:
+ *                         type: string
+ *                         example: "johndoe"
+ *                       email:
+ *                         type: string
+ *                         example: "john@example.com"
+ *                       phone:
+ *                         type: string
+ *                         example: "1234567890"
+ *                       gender:
+ *                         type: string
+ *                         example: "Male"
+ *                       image:
+ *                         type: string
+ *                         nullable: true
+ *                       description:
+ *                         type: string
+ *                         nullable: true
+ *                   depressionScore:
+ *                     type: number
+ *                     example: 15
+ *                   anxietyScore:
+ *                     type: number
+ *                     example: 10
+ *                   stressScore:
+ *                     type: number
+ *                     example: 12
+ *                   depressionLevel:
+ *                     type: string
+ *                     example: "Moderate"
+ *                   anxietyLevel:
+ *                     type: string
+ *                     example: "Mild"
+ *                   stressLevel:
+ *                     type: string
+ *                     example: "Moderate"
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *       400:
+ *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
  * /api/survey-result/{id}:
  *   get:
  *     summary: Get a survey result by ID
