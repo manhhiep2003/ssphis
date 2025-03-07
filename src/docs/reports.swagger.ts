@@ -158,7 +158,7 @@
  *         name: appointment_id
  *         schema:
  *           type: integer
- *         required: true
+ *         required: false
  *         description: The appointment ID
  *     responses:
  *       200:

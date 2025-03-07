@@ -37,12 +37,12 @@ export class ReportsController {
       const report_id = Number(req.params.id);
       const appointment_id = Number(req.query.appointment_id);
 
-      if (!appointment_id) {
-        res.status(HTTP_STATUS.BAD_REQUEST).json({
-          message: "Appointment ID is required",
-        });
-        return;
-      }
+      // if (!appointment_id) {
+      //   res.status(HTTP_STATUS.BAD_REQUEST).json({
+      //     message: "Appointment ID is required",
+      //   });
+      //   return;
+      // }
 
       const report = await ReportsService.getReportById(report_id, appointment_id);
       if (!report) {
