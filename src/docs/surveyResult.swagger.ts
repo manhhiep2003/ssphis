@@ -92,7 +92,7 @@
  * /api/survey-result/user/{id}:
  *   get:
  *     summary: Retrieve surveys and results for a specific user
- *     description: Get all surveys that a user has participated in, along with their survey results and user information.
+ *     description: Get all surveys that a user has participated in, along with their survey results and the questions/answers they selected.
  *     tags:
  *       - SurveyResult
  *     parameters:
@@ -144,39 +144,30 @@
  *                       updatedBy:
  *                         type: string
  *                         nullable: true
- *                   user:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                         example: "1"
- *                       userCode:
- *                         type: string
- *                         example: "U123"
- *                       firstName:
- *                         type: string
- *                         example: "John"
- *                       lastName:
- *                         type: string
- *                         example: "Doe"
- *                       username:
- *                         type: string
- *                         example: "johndoe"
- *                       email:
- *                         type: string
- *                         example: "john@example.com"
- *                       phone:
- *                         type: string
- *                         example: "1234567890"
- *                       gender:
- *                         type: string
- *                         example: "Male"
- *                       image:
- *                         type: string
- *                         nullable: true
- *                       description:
- *                         type: string
- *                         nullable: true
+ *                       questions:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             questionId:
+ *                               type: string
+ *                               example: "101"
+ *                             questionText:
+ *                               type: string
+ *                               example: "How often do you feel down?"
+ *                             selectedOption:
+ *                               type: object
+ *                               nullable: true
+ *                               properties:
+ *                                 optionId:
+ *                                   type: string
+ *                                   example: "1001"
+ *                                 value:
+ *                                   type: integer
+ *                                   example: 2
+ *                                 optionText:
+ *                                   type: string
+ *                                   example: "Sometimes"
  *                   depressionScore:
  *                     type: number
  *                     example: 15
