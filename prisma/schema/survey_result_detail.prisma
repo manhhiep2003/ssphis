@@ -1,7 +1,7 @@
 model SurveyResultDetail {
     surveyResultDetailId BigInt         @id @default(autoincrement()) @map("survey_result_detail_id")
     surveyResultId       BigInt         @map("survey_result_id")
-    surveyResult         SurveyResult   @relation(fields: [surveyResultId], references: [surveyResultId])
+    surveyResult         SurveyResult   @relation(fields: [surveyResultId], references: [surveyResultId], onDelete: Cascade)
     questionId           BigInt         @map("question_id")
     question             Question       @relation(fields: [questionId], references: [questionId])
     optionId             BigInt         @map("question_option_id")

@@ -3,7 +3,7 @@ model QuestionOption {
     value      Int      @map("value") @db.Integer()
     optionText String   @map("option_text") @db.VarChar(255)
     questionId BigInt   @map("question_id")
-    question   Question @relation(fields: [questionId], references: [questionId])
+    question   Question @relation(fields: [questionId], references: [questionId], onDelete: Cascade)
 
     createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
     createdBy          String?              @map("created_by") @db.VarChar(36)

@@ -9,7 +9,7 @@ model SurveyResult {
     userId          BigInt @map("user_id")
     user            User   @relation(fields: [userId], references: [id])
     surveyId        BigInt @map("survey_id")
-    survey          Survey @relation(fields: [surveyId], references: [surveyId])
+    survey          Survey @relation(fields: [surveyId], references: [surveyId], onDelete: Cascade)
 
     createdAt          DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
     createdBy          String?              @map("created_by") @db.VarChar(36)
