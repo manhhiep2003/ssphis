@@ -88,6 +88,10 @@ export class ReportsService {
     if (appointment_id) {
       where.appointment_id = appointment_id;
     }
+    // Return null if no search criteria provided
+    if (Object.keys(where).length === 0) {
+      return null;
+    }
     const report = await prisma.reports.findFirst({
       where,
       include: {

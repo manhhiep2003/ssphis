@@ -141,7 +141,7 @@
 
 /**
  * @swagger
- * /api/reports/{id}:
+ * /api/reports/appointment/{appointment_id}:
  *   get:
  *     summary: Get report by appointment ID
  *     tags: [Reports]
@@ -149,17 +149,17 @@
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: false
- *         description: The report ID (optional)
- *       - in: query
  *         name: appointment_id
  *         schema:
  *           type: integer
- *         required: false
+ *         required: true
  *         description: The appointment ID
+ *       - in: query
+ *         name: report_id
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: The report ID (optional)
  *     responses:
  *       200:
  *         description: Report retrieved successfully
@@ -173,8 +173,6 @@
  *                   example: Report retrieved successfully
  *                 data:
  *                   $ref: '#/components/schemas/Report'
- *       401:
- *         description: Unauthorized - Not authenticated
  *       404:
  *         description: Report not found
  *       500:
