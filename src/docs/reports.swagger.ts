@@ -114,10 +114,50 @@
  * @swagger
  * /api/reports:
  *   get:
- *     summary: Get all reports
+ *     summary: Get all reports or specific report details
  *     tags: [Reports]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: report_id
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: Filter by report ID
+ *       - in: query
+ *         name: appointment_id
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: Filter by appointment ID
+ *       - in: query
+ *         name: user_id
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: Filter by user ID
+ *       - in: query
+ *         name: health_level
+ *         schema:
+ *           type: string
+ *           enum: [Low, Medium, High]
+ *         required: false
+ *         description: Filter by health level
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: false
+ *         description: Filter by start date
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         required: false
+ *         description: Filter by end date
  *     responses:
  *       200:
  *         description: Reports retrieved successfully
@@ -130,15 +170,16 @@
  *                   type: string
  *                   example: Reports retrieved successfully
  *                 data:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/Report'
+ *                   oneOf:
+ *                     - type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Report'
+ *                     - $ref: '#/components/schemas/Report'
  *       401:
  *         description: Unauthorized - Not authenticated
  *       500:
  *         description: Internal server error
  */
-
 /**
  * @swagger
  * /api/reports/appointment/{appointment_id}:
@@ -160,6 +201,12 @@
  *           type: integer
  *         required: false
  *         description: The report ID (optional)
+ *       - in: query
+ *         name: user_id
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: Filter by user ID (optional)
  *     responses:
  *       200:
  *         description: Report retrieved successfully
