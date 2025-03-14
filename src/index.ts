@@ -22,9 +22,17 @@ dotenv.config();
 
 async function bootstrap() {
   const app = express();
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 8080;
 
-  app.use(cors());
+  app.use(
+    cors({
+      origin: ["https://ssphis.onrender.com", "http://localhost:3000"],
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      credentials: true,
+    }),
+  );
+
   app.use(express.json());
 
   await initializeApp();
