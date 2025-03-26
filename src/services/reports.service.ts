@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PrismaClient, HealthLevel } from "@prisma/client";
+import { HealthLevel } from "@prisma/client";
 import { AppointmentStatus } from "./appointments.service";
-
-const prisma = new PrismaClient();
+import prisma from "../prisma";
 
 interface CreateReportDTO {
   appointment_id: number;

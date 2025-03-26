@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Category, PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Category } from "@prisma/client";
+import prisma from "../prisma";
 
 export class CategoryService {
   static async createCategory(data: { name: string; description: string }): Promise<Category> {

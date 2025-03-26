@@ -1,6 +1,6 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import prisma from "../prisma";
 
-const prisma = new PrismaClient();
 export class ProgramService {
   static async createProgram(data: {
     title: string;

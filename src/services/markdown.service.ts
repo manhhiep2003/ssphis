@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PrismaClient } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { CreateMarkdownDto, UpdateMarkdownDto } from "../interfaces/markdown.interface";
+import prisma from "../prisma";
 
-const prisma = new PrismaClient();
 // Helper function to serialize BigInt
 const serializeMarkdown = (markdown: any) => ({
   ...markdown,
